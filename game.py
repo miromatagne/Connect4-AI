@@ -10,6 +10,7 @@ from observable import Observable
 from observer import Observer 
 from bot import Bot 
 from file_recording import FileRecording
+from training import Training
 
 # Graphical size settings
 SQUARE_SIZE = 100
@@ -81,7 +82,7 @@ class Connect4Game(Observable):
                     b = 0
                     if self._turn == self._starter: #Winner is the player that started
                         b = 1
-                    self.file_recording.write_to_winning_moves(b,self.moves[self._turn])
+                    self.file_recording.write_to_winning_moves(b, self._turn, self.moves[self._turn])
                     self._won = self._turn
                     self.notify(Event.GAME_WON, self._won)
                 
@@ -328,34 +329,42 @@ class Connect4Viewer(Observer):
 
 
 if __name__ == '__main__':
-    # game_mode = 0
-    # game = Connect4Game(game_mode)
-    # view = Connect4Viewer(game=game)
-    # view.initialize()
+    # # for i in range(1000):
+    #     game_mode = 0
+    #     game = Connect4Game(game_mode)
+    #     # view = Connect4Viewer(game=game)
+    #     # view.initialize()
 
-    # running = True
-    # while running:
-    #     if game_mode == 0:
-    #         if ((game._turn == 1) and (game.get_win() is None)):
-    #             game.bot_place()
-    #         elif ((game._turn == -1) and (game.get_win() is None)):
-    #             game.bot_place()
-        
-    #     pygame.time.wait(1000)
+    #     running = True
+    #     while running:
+    #         if game_mode == 0:
+    #             if ((game._turn == 1) and (game.get_win() is None)):
+    #                 game.bot_place()
+    #             elif ((game._turn == -1) and (game.get_win() is None)):
+    #                 game.bot_place()
+    #             elif game.get_win() is not None:
+    #                 running = False
 
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             running = False
-    #         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-    #             if game.get_win() is None:
-    #                 game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
-    #             else:
-    #                 game.reset_game()
+            # pygame.time.wait(1000)
 
-    # pygame.quit()
+            # for event in pygame.event.get():
+            #     if event.type == pygame.QUIT:
+            #         running = False
+            #     if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            #         if game.get_win() is None:
+            #             game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
+            #         else:
+            #             game.reset_game()
+
+        # pygame.quit()
 
     f = FileRecording()
-    f.read_winning_file()
+    # f.read_file()
+    f.generate_training_set()
+
+    # t = Training()
+    # t.create_NN()
+
 
     # while(running and i < 100):
 
