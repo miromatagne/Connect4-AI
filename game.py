@@ -68,7 +68,7 @@ class Connect4Game(Observable):
         :param c: column to place on
         :return: position of placed colour or None if not placeable
         """
-        print(self._board)
+        #print(self._board)
         for r in range(self._rows):
             if self._board[c][r] == 0:
                 self._board[c][r] = self._turn
@@ -358,12 +358,11 @@ if __name__ == '__main__':
 
         # pygame.quit()
 
+    
     f = FileRecording()
-    # f.read_file()
+    
     f.generate_training_set()
-
-    # t = Training()
-    # t.create_NN()
+    
 
 
     # while(running and i < 100):
