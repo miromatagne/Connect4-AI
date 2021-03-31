@@ -123,7 +123,7 @@ class Connect4Game(Observable):
             else:
                 count = 0
             if count == 4:
-                print("Horizontal win")
+                #print("Horizontal win")
                 #self._won = player
                 #self.notify(Event.GAME_WON, self._won)
                 # return self._won
@@ -137,7 +137,7 @@ class Connect4Game(Observable):
             else:
                 count = 0
             if count == 4:
-                print("Vertical win")
+                #print("Vertical win")
                 # self._won = player
                 # self.notify(Event.GAME_WON, self._won)
                 # return self._won
@@ -154,7 +154,7 @@ class Connect4Game(Observable):
                 else:
                     count1 = 0
                 if count1 == 4:
-                    print("Diagonal BL-TR win")
+                    #print("Diagonal BL-TR win")
                     # self._won = player
                     # self.notify(Event.GAME_WON, self._won)
                     # return self._won
@@ -166,7 +166,7 @@ class Connect4Game(Observable):
                 else:
                     count2 = 0
                 if count2 == 4:
-                    print("Diagonal BR-TL win")
+                    #print("Diagonal BR-TL win")
                     # self._won = player
                     # self.notify(Event.GAME_WON, self._won)
                     # return self._won
@@ -174,7 +174,7 @@ class Connect4Game(Observable):
 
         # Draw check
         if sum([x.count(0) for x in self._board]) == 0:
-            print("5")
+            # print("5")
             # self._won = 0
             # self.notify(Event.GAME_WON, self._won)
             # return self._won
