@@ -6,11 +6,13 @@ from copy import deepcopy
 import uuid
 import numpy as np
 import time
-from observable import Observable 
-from observer import Observer 
-from bot import Bot 
+from observable import Observable
+from observer import Observer
+from bot import Bot
 from file_recording import FileRecording
 from training import Training
+
+PLAYERS = {1: "Yellow", -1: "Red"}
 
 # Graphical size settings
 SQUARE_SIZE = 100
@@ -42,23 +44,25 @@ class Connect4Game(Observable):
         self._won = None
         self._round = 0
         self.bot = None
-        self.moves = {1:[],-1:[]}
+        self.moves = {1: [], -1: []}
         self.file_recording = FileRecording()
         self.reset_game()
 
         if game_mode == 0:
-            self.bot = Bot(self)
+            self.bot = Bot(self, 0)
+        elif game_mode == 1:
+            self.bot = Bot(self, 1)
 
     def reset_game(self):
         """
         Resets the game state (board and variables)
         """
-        print("reset")
+        # print("reset")
         self._board = [[0 for _ in range(self._rows)]
                        for _ in range(self._cols)]
         self._starter = random.choice([-1, 1])
         self._turn = self._starter
-        print(self._turn)
+        # (self._turn)
         self._won = None
         self.notify(Event.GAME_RESET)
 
@@ -68,24 +72,25 @@ class Connect4Game(Observable):
         :param c: column to place on
         :return: position of placed colour or None if not placeable
         """
-        #print(self._board)
+        # print(self._board)
         for r in range(self._rows):
             if self._board[c][r] == 0:
                 self._board[c][r] = self._turn
                 self.notify(Event.PIECE_PLACED, (c, r))
 
-                self.file_recording.write_to_history(self._round,self._board)
+                self.file_recording.write_to_history(self._round, self._board)
                 self.moves[self._turn].append(c)
 
                 exists_winner = self.check_win((c, r))
                 if exists_winner:
                     b = 0
-                    if self._turn == self._starter: #Winner is the player that started
+                    if self._turn == self._starter:  # Winner is the player that started
                         b = 1
-                    self.file_recording.write_to_winning_moves(b, self._turn, self.moves[self._turn])
+                    self.file_recording.write_to_winning_moves(
+                        b, self._turn, self.moves[self._turn])
                     self._won = self._turn
                     self.notify(Event.GAME_WON, self._won)
-                
+
                 if self._turn == 1:
                     self._turn = -1
                 else:
@@ -103,7 +108,7 @@ class Connect4Game(Observable):
         """
         c = pos[0]
         r = pos[1]
-        player = self._turn
+        player = self._board[c][r]
 
         min_col = max(c-3, 0)
         max_col = min(c+3, self._cols-1)
@@ -118,10 +123,10 @@ class Connect4Game(Observable):
             else:
                 count = 0
             if count == 4:
-                print("1")
+                print("Horizontal win")
                 #self._won = player
                 #self.notify(Event.GAME_WON, self._won)
-                #return self._won
+                # return self._won
                 return True
 
         # Vertical check
@@ -132,7 +137,7 @@ class Connect4Game(Observable):
             else:
                 count = 0
             if count == 4:
-                print("2")
+                print("Vertical win")
                 # self._won = player
                 # self.notify(Event.GAME_WON, self._won)
                 # return self._won
@@ -149,7 +154,7 @@ class Connect4Game(Observable):
                 else:
                     count1 = 0
                 if count1 == 4:
-                    print("3")
+                    print("Diagonal BL-TR win")
                     # self._won = player
                     # self.notify(Event.GAME_WON, self._won)
                     # return self._won
@@ -161,7 +166,7 @@ class Connect4Game(Observable):
                 else:
                     count2 = 0
                 if count2 == 4:
-                    print("4")
+                    print("Diagonal BR-TL win")
                     # self._won = player
                     # self.notify(Event.GAME_WON, self._won)
                     # return self._won
@@ -330,40 +335,36 @@ class Connect4Viewer(Observer):
 
 if __name__ == '__main__':
     # # for i in range(1000):
-    #     game_mode = 0
-    #     game = Connect4Game(game_mode)
-    #     # view = Connect4Viewer(game=game)
-    #     # view.initialize()
+    game_mode = 1
+    game = Connect4Game(game_mode)
+    view = Connect4Viewer(game=game)
+    view.initialize()
 
-    #     running = True
-    #     while running:
-    #         if game_mode == 0:
-    #             if ((game._turn == 1) and (game.get_win() is None)):
-    #                 game.bot_place()
-    #             elif ((game._turn == -1) and (game.get_win() is None)):
-    #                 game.bot_place()
-    #             elif game.get_win() is not None:
-    #                 running = False
+    running = True
+    while running:
+        if ((game._turn == 1) and (game.get_win() is None)):
+            game.bot_place()
+        elif ((game._turn == -1) and (game.get_win() is None)):
+            game.bot_place()
+        # elif game.get_win() is not None:
+        #     running = False
 
-            # pygame.time.wait(1000)
+        pygame.time.wait(1000)
 
-            # for event in pygame.event.get():
-            #     if event.type == pygame.QUIT:
-            #         running = False
-            #     if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            #         if game.get_win() is None:
-            #             game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
-            #         else:
-            #             game.reset_game()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                if game.get_win() is None:
+                    game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
+                else:
+                    game.reset_game()
 
-        # pygame.quit()
+    pygame.quit()
 
-    
-    f = FileRecording()
-    
-    f.generate_training_set()
-    
+    # f = FileRecording()
 
+    # f.generate_training_set()
 
     # while(running and i < 100):
 
