@@ -1,6 +1,7 @@
 import numpy as np
 import random
 from observer import Observer
+import tensorflow as tf
 
 YELLOW_PLAYER = 1
 RED_PLAYER = -1
@@ -14,7 +15,11 @@ class Bot(Observer):
         self._game = game
         # Bot type determines how the bot picks his moves
         self._type = bot_type
-        print("Created bot of type " + str(self._type))
+
+        #print("Created bot of type " + str(self._type))
+        self._model = None
+        if self._type == 2:
+            self._model = self.load_model()
 
     def update(self, obj, event, *argv):
         print(obj)
@@ -26,7 +31,7 @@ class Bot(Observer):
 
             :return: the column number where the bot should play the next move
         """
-        print(PLAYERS[self._game._turn] + " is about to play :")
+        #print(PLAYERS[self._game._turn] + " is about to play :")
         column = None
         # In case the bot type is 0, the bot checks for winning moves, and if there aren't,
         # then picks a valid random move.
@@ -42,18 +47,39 @@ class Bot(Observer):
         elif self._type == 1:
             win_col = self.get_winning_move()
             if win_col is not None:
-                print("Winning column :", win_col)
+                #print("Winning column :", win_col)
                 column = win_col
             else:
                 def_move = self.get_defensive_move()
                 if def_move is not None:
-                    print("Defensive column :", def_move)
+                    #print("Defensive column :", def_move)
                     column = def_move
                 else:
                     column = self.get_random_move()
-                    print("Random move", column)
+                    #print("Random move", column)
 
-        print("-------------------------")
+        elif self._type == 2:
+            flat_board = [[item for sublist in self._game._board for item in sublist]]
+            print(flat_board)
+            output = self._model.predict(flat_board)
+            output = output[0]
+            free_cols = []
+            for i in range(len(self._game._board)):
+                if self._game._board[i][self._game._rows-1] == 0:
+                    free_cols.append(i)
+
+            found = False
+            while not found:
+                print(output)
+                column = np.argmax(output)
+                if sum(output) == 0:
+                    column = self.get_random_move()
+                if column in free_cols:
+                    found = True 
+                else:
+                    output[column] = 0
+            
+        # print("-------------------------")
         self._game.place(column)
 
     def get_winning_move(self):
@@ -110,3 +136,8 @@ class Bot(Observer):
                         return column
                     break
         return column
+
+    def load_model(self):
+        model = tf.keras.models.load_model('./saved_model/my_model')
+        #model.summary()
+        return model

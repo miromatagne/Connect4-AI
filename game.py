@@ -52,6 +52,8 @@ class Connect4Game(Observable):
             self.bot = Bot(self, 0)
         elif game_mode == 1:
             self.bot = Bot(self, 1)
+        elif game_mode == 2:
+            self.bot = Bot(self, 2)
 
     def reset_game(self):
         """
@@ -334,8 +336,8 @@ class Connect4Viewer(Observer):
 
 
 if __name__ == '__main__':
-    # # for i in range(1000):
-    game_mode = 1
+    # for i in range(10000):
+    game_mode = 2
     game = Connect4Game(game_mode)
     view = Connect4Viewer(game=game)
     view.initialize()
@@ -346,8 +348,8 @@ if __name__ == '__main__':
             game.bot_place()
         elif ((game._turn == -1) and (game.get_win() is None)):
             game.bot_place()
-        # elif game.get_win() is not None:
-        #     running = False
+        elif game.get_win() is not None:
+            running = False
 
         pygame.time.wait(1000)
 

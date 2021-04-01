@@ -12,6 +12,9 @@ class Training():
         self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
         self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
 
+        # Define loss function, create optimizer and create accuracy evaluation
+        self._model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
     # def define_loss_function(self):
     #     loss_function = tf.nn.softmax_cross_entropy_with_logits_v2(logits=self._outputs, labels=y)
     #     self._loss = tf.reduce_mean(loss_function)
@@ -48,16 +51,19 @@ class Training():
         return train_input_data, train_output_data, eval_input_data, eval_output_data
     
 
-    def train_model(self, input_samples, output_samples, test_split):
-        
-        self.create_NN()
-        # Define loss function, create optimizer and create accuracy evaluation
-        self._model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-        train_input_data, train_output_data, eval_input_data, eval_output_data = self.split_data(input_samples, output_samples, test_split)
-
+    def train_model(self, train_input_data, train_output_data, test_split, train = False):
+        #self.create_NN()
         self._model.fit(train_input_data, train_output_data, epochs=600, batch_size=32, verbose=1)
         
-        loss, acc = self._model.evaluate(eval_input_data, eval_output_data, verbose=1)
+        
 
+    def evaluate_model(self, eval_input_data, eval_output_data):
+        loss, acc = self._model.evaluate(eval_input_data, eval_output_data, verbose=1)
         print(loss, acc)
+
+    def save_model(self):
+        self._model.save('./saved_model/my_model')
+    
+    
+
+    
