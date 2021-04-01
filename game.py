@@ -35,7 +35,7 @@ class Event(enum.Enum):
 
 class Connect4Game(Observable):
 
-    def __init__(self, game_mode, rows=6, cols=7):
+    def __init__(self, player1, player2, rows=6, cols=7):
         super().__init__()
         self._rows = rows
         self._cols = cols
@@ -47,13 +47,15 @@ class Connect4Game(Observable):
         self.moves = {1: [], -1: []}
         self.file_recording = FileRecording()
         self.reset_game()
+        self._player1 = Bot(self, player1)
+        self._player2 = Bot(self, player2)
 
-        if game_mode == 0:
-            self.bot = Bot(self, 0)
-        elif game_mode == 1:
-            self.bot = Bot(self, 1)
-        elif game_mode == 2:
-            self.bot = Bot(self, 2)
+        # if game_mode == 0:
+        #     self.bot = Bot(self, 0)
+        # elif game_mode == 1:
+        #     self.bot = Bot(self, 1)
+        # elif game_mode == 2:
+        #     self.bot = Bot(self, 2)
 
     def reset_game(self):
         """
@@ -247,7 +249,10 @@ class Connect4Game(Observable):
             np.save(state.outputname, output_move)
 
     def bot_place(self):
-        self.bot.make_move()
+        if self._turn == 1:
+            self._player1.make_move()
+        else:
+            self._player2.make_move()
 
 
 class Connect4Viewer(Observer):
@@ -338,7 +343,7 @@ class Connect4Viewer(Observer):
 if __name__ == '__main__':
     # for i in range(10000):
     game_mode = 2
-    game = Connect4Game(game_mode)
+    game = Connect4Game(2, 1)
     view = Connect4Viewer(game=game)
     view.initialize()
 
