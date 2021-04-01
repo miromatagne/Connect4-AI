@@ -7,13 +7,15 @@ class Training():
         pass 
 
     def create_NN(self):
-        inputs = tf.keras.Input(shape = (42,))
-        x = tf.keras.layers.Dense(256, activation=tf.nn.relu)(inputs)
-        self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
-        self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
+        tf.debugging.set_log_device_placement(True)
+        with tf.device('/GPU:0'):
+            inputs = tf.keras.Input(shape = (42,))
+            x = tf.keras.layers.Dense(256, activation=tf.nn.relu)(inputs)
+            self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
+            self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
 
-        # Define loss function, create optimizer and create accuracy evaluation
-        self._model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+            # Define loss function, create optimizer and create accuracy evaluation
+            self._model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
     # def define_loss_function(self):
     #     loss_function = tf.nn.softmax_cross_entropy_with_logits_v2(logits=self._outputs, labels=y)
