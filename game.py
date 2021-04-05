@@ -23,6 +23,9 @@ if __name__ == '__main__':
     game = Connect4Game(2, 1)
     view = Connect4Viewer(game=game)
     view.initialize()
+    # game = Connect4Game(0, 1)
+    # view = Connect4Viewer(game=game)
+    # view.initialize()
 
     running = True
     while running:
@@ -48,6 +51,8 @@ if __name__ == '__main__':
 
     # model = Model("./saved_model/my_model")
     # model.evaluate_model(100)
+    model = Model("./saved_model/my_model")
+    model.evaluate_model(100, 0)
 
     # f = FileRecording()
 

@@ -21,8 +21,8 @@ class Model():
         for i in range(nb_rep):
             game = Connect4Game(player1=None, player2=game_mode,
                                 bot1_model=self._model)
-            #view = Connect4Viewer(game=game)
-            # view.initialize()
+            view = Connect4Viewer(game=game)
+            view.initialize()
             running = True
             while running:
                 if ((game._turn == 1) and (game.get_win() is None)):
