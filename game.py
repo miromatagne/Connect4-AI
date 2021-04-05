@@ -18,8 +18,7 @@ from event import Event
 
 if __name__ == '__main__':
     # for i in range(10000):
-    # game_mode = 2
-    # game = Connect4Game(2, 1)
+    # game = Connect4Game(0, 1)
     # view = Connect4Viewer(game=game)
     # view.initialize()
 
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     # pygame.quit()
 
     model = Model("./saved_model/my_model")
-    model.evaluate_model(100)
+    model.evaluate_model(100, 0)
 
     # f = FileRecording()
 
