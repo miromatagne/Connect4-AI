@@ -11,15 +11,15 @@ PLAYERS = {1: "Yellow", -1: "Red"}
 
 class Bot(Observer):
 
-    def __init__(self, game, bot_type):
+    def __init__(self, game, bot_type=None, model=None):
         self._game = game
         # Bot type determines how the bot picks his moves
         self._type = bot_type
 
         #print("Created bot of type " + str(self._type))
         self._model = None
-        if self._type == 2:
-            self._model = self.load_model()
+        if model is not None:
+            self._model = model
 
     def update(self, obj, event, *argv):
         print(obj)
@@ -58,9 +58,10 @@ class Bot(Observer):
                     column = self.get_random_move()
                     #print("Random move", column)
 
-        elif self._type == 2:
-            flat_board = [[item for sublist in self._game._board for item in sublist]]
-            print(flat_board)
+        else:
+            flat_board = [
+                [item for sublist in self._game._board for item in sublist]]
+            # print(flat_board)
             output = self._model.predict(flat_board)
             output = output[0]
             free_cols = []
@@ -70,15 +71,15 @@ class Bot(Observer):
 
             found = False
             while not found:
-                print(output)
+                # print(output)
                 column = np.argmax(output)
                 if sum(output) == 0:
                     column = self.get_random_move()
                 if column in free_cols:
-                    found = True 
+                    found = True
                 else:
                     output[column] = 0
-            
+
         # print("-------------------------")
         self._game.place(column)
 
@@ -136,8 +137,3 @@ class Bot(Observer):
                         return column
                     break
         return column
-
-    def load_model(self):
-        model = tf.keras.models.load_model('./saved_model/my_model')
-        #model.summary()
-        return model
