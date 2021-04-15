@@ -1,10 +1,11 @@
-import tensorflow as tf 
+import tensorflow as tf
 import numpy as np
 
+
 class Training():
-    
+
     def __init__(self):
-        pass 
+        pass
 
     def create_NN(self):
         
@@ -33,8 +34,9 @@ class Training():
     #     acc = tf.reduce_mean(tf.cast(correct, 'float'))
 
     def split_data(self, input_samples, output_samples, test_split):
-        #Reshape input samples 
-        input_samples = input_samples.reshape(input_samples.shape[0], -1)  # .reshape((input_samples.shape[0], 42))
+        # Reshape input samples
+        # .reshape((input_samples.shape[0], 42))
+        input_samples = input_samples.reshape(input_samples.shape[0], -1)
         print(input_samples.shape)
         num_eval = int(input_samples.shape[0] * test_split)
         num_train = input_samples.shape[0] - num_eval
@@ -54,7 +56,6 @@ class Training():
         eval_input_data, eval_output_data = input_samples[eval_idx], output_samples[eval_idx]
 
         return train_input_data, train_output_data, eval_input_data, eval_output_data
-    
 
     def train_model(self, train_input_data, train_output_data, test_split):
         self._model.fit(train_input_data, train_output_data, epochs=400, batch_size=32, verbose=1)
@@ -62,12 +63,10 @@ class Training():
         
 
     def evaluate_model(self, eval_input_data, eval_output_data):
-        loss, acc = self._model.evaluate(eval_input_data, eval_output_data, verbose=1)
+        loss, acc = self._model.evaluate(
+            eval_input_data, eval_output_data, verbose=1)
         print(loss, acc)
 
     def save_model(self):
         self._model.save('./model_better_bot')
-    
-    
-
-    
+        # self._model.save('./saved_model/my_model')
