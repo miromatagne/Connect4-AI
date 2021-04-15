@@ -83,7 +83,7 @@ class FileRecording():
         output_samples = np.zeros((len(history_games)*21, 7))
         total_rounds = 0
 
-        for g in range(len(history_games)):#len(history_games)): 
+        for g in range(len(history_games)):
             winner_boards, encoded_moves, last_round = self.read_file(history_games[g]) 
             
             if last_round != 0:
@@ -102,8 +102,9 @@ class FileRecording():
         #split the data first 
 
         training.create_NN()
-        #training.train_model(input_samples, output_samples, test_split, True)
-        #training.save_model()
-        #train_input_data, train_output_data, eval_input_data, eval_output_data = training.split_data(input_samples, output_samples, test_split)
-        #training.load_model()
+        
+        train_input_data, train_output_data, eval_input_data, eval_output_data = training.split_data(input_samples, output_samples, test_split)
+        training.train_model(train_input_data, train_output_data, test_split)
+        training.save_model()
+        
         #training.evaluate_model(eval_input_data, eval_output_data)

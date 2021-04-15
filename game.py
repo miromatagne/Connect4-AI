@@ -343,7 +343,7 @@ class Connect4Viewer(Observer):
 if __name__ == '__main__':
     # for i in range(10000):
     # game_mode = 2
-    # game = Connect4Game(2, 1)
+    # game = Connect4Game(1, 1)
     # view = Connect4Viewer(game=game)
     # view.initialize()
 
@@ -372,6 +372,8 @@ if __name__ == '__main__':
     f = FileRecording()
 
     f.generate_training_set()
+
+
 
     # while(running and i < 100):
 
