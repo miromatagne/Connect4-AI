@@ -14,6 +14,7 @@ ROW_COUNT = 6
 COLUMN_COUNT = 7
 WINDOW_LENGTH = 4
 
+
 class Bot(Observer):
 
     def __init__(self, game, bot_type=None, model=None):
@@ -29,17 +30,22 @@ class Bot(Observer):
     def update(self, obj, event, *argv):
         print(obj)
 
+<<<<<<< HEAD
     def drop_piece(self,board, row, col, piece):
         # print(col,row)
+=======
+    def drop_piece(self, board, row, col, piece):
+        print(col, row)
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         board[col][row] = piece
 
-    def get_next_open_row(self,board, col):
-    	for r in range(ROW_COUNT):
+    def get_next_open_row(self, board, col):
+        for r in range(ROW_COUNT):
             if board[col][r] == 0:
                 return r
 
-    def winning_move(self,board, piece):
-            # Check horizontal locations for win
+    def winning_move(self, board, piece):
+        # Check horizontal locations for win
         for c in range(COLUMN_COUNT-3):
             for r in range(ROW_COUNT):
                 if board[c][r] == piece and board[c+1][r] == piece and board[c+2][r] == piece and board[c+3][r] == piece:
@@ -49,8 +55,13 @@ class Bot(Observer):
         # Check vertical locations for win
         for c in range(COLUMN_COUNT):
             for r in range(ROW_COUNT-3):
+<<<<<<< HEAD
                 if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece: 
                     # print("vertical")
+=======
+                if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece:
+                    print("vertical")
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
                     return True
 
         # Check positively sloped diaganols
@@ -68,11 +79,20 @@ class Bot(Observer):
                     return True
         return False
 
+<<<<<<< HEAD
     def is_terminal_node(self,board):
         # print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn ) or self.get_valid_locations() is None)
         return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn ) or self.get_valid_locations() is None
     
     def evaluate_window(self,window, piece):
+=======
+    def is_terminal_node(self, board):
+        print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board,
+                                                                                 self._game._turn) or self.get_valid_locations() is None)
+        return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn) or self.get_valid_locations() is None
+
+    def evaluate_window(self, window, piece):
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         score = 0
         opp_piece = self._game._turn*-1
         if piece == self._game._turn*-1:
@@ -89,28 +109,29 @@ class Bot(Observer):
             score -= 4
 
         return score
-    def score_position(self,board, piece):
+
+    def score_position(self, board, piece):
         score = 0
-        ## Score center column
+        # Score center column
         center_array = [int(i) for i in list(board[COLUMN_COUNT//2][:])]
         center_count = center_array.count(piece)
         score += center_count * 3
 
-        ## Score Horizontal
+        # Score Horizontal
         for r in range(ROW_COUNT):
             row_array = [int(i) for i in list(board[:][r])]
             for c in range(COLUMN_COUNT-3):
                 window = row_array[c:c+WINDOW_LENGTH]
                 score += self.evaluate_window(window, piece)
 
-        ## Score Vertical
+        # Score Vertical
         for c in range(COLUMN_COUNT):
             col_array = [int(i) for i in list(board[c][:])]
             for r in range(ROW_COUNT-3):
                 window = col_array[r:r+WINDOW_LENGTH]
                 score += self.evaluate_window(window, piece)
 
-        ## Score posiive sloped diagonal
+        # Score posiive sloped diagonal
         for r in range(ROW_COUNT-3):
             for c in range(COLUMN_COUNT-3):
                 window = [board[c+i][r+i] for i in range(WINDOW_LENGTH)]
@@ -123,7 +144,7 @@ class Bot(Observer):
 
         return score
 
-    def minimax(self,board, depth, alpha, beta, maximizingPlayer):
+    def minimax(self, board, depth, alpha, beta, maximizingPlayer):
         valid_locations = self.get_valid_locations()
         is_terminal = self.is_terminal_node(board)
         if depth == 0 or is_terminal:
@@ -132,23 +153,40 @@ class Bot(Observer):
                     return (None, 100000000000000)
                 elif self.winning_move(board, self._game._turn*-1):
                     return (None, -10000000000000)
+<<<<<<< HEAD
                 else: # Game is over, no more valid moves
                     return (None, 0)
             else: # Depth is zero
                 return (None, self.score_position(board, self._game._turn))
         if maximizingPlayer:
             # print("depth ",depth)
+=======
+                else:  # Game is over, no more valid moves
+                    print("WHAT 3")
+                    return (None, 0)
+            else:  # Depth is zero
+                print("kaka")
+                return (None, self.score_position(board, self._game._turn))
+        if maximizingPlayer:
+            print("depth ", depth)
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
             value = -math.inf
             column = random.choice(valid_locations)
             for col in valid_locations:
                 row = self.get_next_open_row(board, col)
-                b_copy=[]
-                for i in range (0,len(board)):
+                b_copy = []
+                for i in range(0, len(board)):
                     b_copy.append(board[i].copy())
                 # b_copy = deepcopy(board)
                 if(row is not None and col is not None):
                     self.drop_piece(b_copy, row, col, self._game._turn)
+<<<<<<< HEAD
                 new_score = self.minimax(b_copy, depth-1, alpha, beta, False)[1]
+=======
+                new_score = self.minimax(
+                    b_copy, depth-1, alpha, beta, False)[1]
+                print("ok")
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
                 if new_score > value:
                     value = new_score
                     column = col
@@ -157,13 +195,13 @@ class Bot(Observer):
                     break
             return column, value
 
-        else: # Minimizing player
+        else:  # Minimizing player
             value = math.inf
             column = random.choice(valid_locations)
             for col in valid_locations:
                 row = self.get_next_open_row(board, col)
-                b_copy=[]
-                for i in range (0,len(board)):
+                b_copy = []
+                for i in range(0, len(board)):
                     b_copy.append(board[i].copy())
                 # b_copy = deepcopy(board)
                 if(row is not None and col is not None):
@@ -211,12 +249,20 @@ class Bot(Observer):
                     column = self.get_random_move()
                     #print("Random move", column)
         elif self._type == 2:
+<<<<<<< HEAD
             column, minimax_score = self.minimax(self._game._board, 5, -math.inf, math.inf, True)
             # print(column)
+=======
+            column, minimax_score = self.minimax(
+                self._game._board, 5, -math.inf, math.inf, True)
+            print(column)
+>>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]
             # print(flat_board)
+            if self._game._turn == -1:
+                flat_board *= -1
             output = self._model.predict(flat_board)
             output = output[0]
             free_cols = []
@@ -256,6 +302,7 @@ class Bot(Observer):
                         return column
                     break
         return column
+
     def get_valid_locations(self):
         free_cols = []
         for i in range(len(self._game._board)):
