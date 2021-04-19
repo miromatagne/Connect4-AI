@@ -55,8 +55,6 @@ if __name__ == '__main__':
 
     # f.generate_training_set()
 
-
-
     # while(running and i < 100):
 
     #     if ((turn == AI) and (won is None)):
