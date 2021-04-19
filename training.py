@@ -4,8 +4,9 @@ import numpy as np
 
 class Training():
 
-    def __init__(self):
-        pass
+    def __init__(self, model_filename=None):
+        if model_filename is not None:
+            self._model = tf.keras.models.load_model(model_filename)
 
     def create_NN(self):
         
@@ -15,6 +16,7 @@ class Training():
         # with tf.device('/GPU:0'):
         inputs = tf.keras.Input(shape = (42,))
         x = tf.keras.layers.Dense(256, activation=tf.nn.relu)(inputs)
+        #hidden = tf.keras.layers.Dense(256, activation=tf.nn.relu)(x)
         self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
         self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
 
@@ -58,7 +60,7 @@ class Training():
         return train_input_data, train_output_data, eval_input_data, eval_output_data
 
     def train_model(self, train_input_data, train_output_data, test_split):
-        self._model.fit(train_input_data, train_output_data, epochs=400, batch_size=32, verbose=1)
+        self._model.fit(train_input_data, train_output_data, epochs=350, batch_size=32, verbose=1)
         
         
 
@@ -68,5 +70,5 @@ class Training():
         print(loss, acc)
 
     def save_model(self):
-        self._model.save('./model_better_bot')
+        self._model.save('./model_better_bot_type2_4layers')
         # self._model.save('./saved_model/my_model')

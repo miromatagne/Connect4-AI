@@ -29,6 +29,7 @@ class Model():
                     game.bot_place()
                 elif ((game._turn == -1) and (game.get_win() is None)):
                     game.bot_place()
+
                 elif game.get_win() is not None:
                     if game.get_win() == 1:
                         total_games_won += 1

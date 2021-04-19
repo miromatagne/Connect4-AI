@@ -99,12 +99,14 @@ class FileRecording():
     
         test_split = 0.2
         training = Training()
-        #split the data first 
 
+        #split the data first 
         training.create_NN()
         
         train_input_data, train_output_data, eval_input_data, eval_output_data = training.split_data(input_samples, output_samples, test_split)
         training.train_model(train_input_data, train_output_data, test_split)
         training.save_model()
         
-        #training.evaluate_model(eval_input_data, eval_output_data)
+        training.evaluate_model(eval_input_data, eval_output_data)
+
+        
