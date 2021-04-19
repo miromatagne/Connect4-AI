@@ -46,9 +46,9 @@ if __name__ == '__main__':
 
     # pygame.quit()
 
-    model = Model("./model_better_bot_type2_4layers")
+    model = Model("./model_better_bot_type1_2_4layers")
     # # model = Model("./saved_model/my_model")
-    model.evaluate_model(100, 1)
+    model.evaluate_model(1000, 1)
 
     # f = FileRecording()
 
