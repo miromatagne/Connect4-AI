@@ -20,7 +20,7 @@ from event import Event
 if __name__ == '__main__':
     for i in range(2):
             game_mode = 2
-            game = Connect4Game(2, 1)
+            game = Connect4Game(2, 2)
             view = Connect4Viewer(game=game)
             view.initialize()
 
