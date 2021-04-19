@@ -30,13 +30,8 @@ class Bot(Observer):
     def update(self, obj, event, *argv):
         print(obj)
 
-<<<<<<< HEAD
-    def drop_piece(self,board, row, col, piece):
-        # print(col,row)
-=======
     def drop_piece(self, board, row, col, piece):
         print(col, row)
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         board[col][row] = piece
 
     def get_next_open_row(self, board, col):
@@ -55,13 +50,8 @@ class Bot(Observer):
         # Check vertical locations for win
         for c in range(COLUMN_COUNT):
             for r in range(ROW_COUNT-3):
-<<<<<<< HEAD
-                if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece: 
-                    # print("vertical")
-=======
                 if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece:
                     print("vertical")
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
                     return True
 
         # Check positively sloped diaganols
@@ -79,20 +69,12 @@ class Bot(Observer):
                     return True
         return False
 
-<<<<<<< HEAD
-    def is_terminal_node(self,board):
-        # print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn ) or self.get_valid_locations() is None)
-        return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn ) or self.get_valid_locations() is None
-    
-    def evaluate_window(self,window, piece):
-=======
     def is_terminal_node(self, board):
         print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board,
                                                                                  self._game._turn) or self.get_valid_locations() is None)
         return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn) or self.get_valid_locations() is None
 
     def evaluate_window(self, window, piece):
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         score = 0
         opp_piece = self._game._turn*-1
         if piece == self._game._turn*-1:
@@ -150,17 +132,9 @@ class Bot(Observer):
         if depth == 0 or is_terminal:
             if is_terminal:
                 if self.winning_move(board, self._game._turn):
-                    return (None, 100000000000000)
+                    return ("done", 100000000000000)
                 elif self.winning_move(board, self._game._turn*-1):
-                    return (None, -10000000000000)
-<<<<<<< HEAD
-                else: # Game is over, no more valid moves
-                    return (None, 0)
-            else: # Depth is zero
-                return (None, self.score_position(board, self._game._turn))
-        if maximizingPlayer:
-            # print("depth ",depth)
-=======
+                    return ("done", -10000000000000)
                 else:  # Game is over, no more valid moves
                     print("WHAT 3")
                     return (None, 0)
@@ -169,7 +143,6 @@ class Bot(Observer):
                 return (None, self.score_position(board, self._game._turn))
         if maximizingPlayer:
             print("depth ", depth)
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
             value = -math.inf
             column = random.choice(valid_locations)
             for col in valid_locations:
@@ -180,13 +153,9 @@ class Bot(Observer):
                 # b_copy = deepcopy(board)
                 if(row is not None and col is not None):
                     self.drop_piece(b_copy, row, col, self._game._turn)
-<<<<<<< HEAD
-                new_score = self.minimax(b_copy, depth-1, alpha, beta, False)[1]
-=======
                 new_score = self.minimax(
                     b_copy, depth-1, alpha, beta, False)[1]
                 print("ok")
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
                 if new_score > value:
                     value = new_score
                     column = col
@@ -249,14 +218,9 @@ class Bot(Observer):
                     column = self.get_random_move()
                     #print("Random move", column)
         elif self._type == 2:
-<<<<<<< HEAD
-            column, minimax_score = self.minimax(self._game._board, 5, -math.inf, math.inf, True)
-            # print(column)
-=======
             column, minimax_score = self.minimax(
                 self._game._board, 5, -math.inf, math.inf, True)
             print(column)
->>>>>>> 8b209bc55db9e78bedc3abbf4df8ee4cd5e14998
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]
