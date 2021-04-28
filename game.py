@@ -16,35 +16,36 @@ from connect4game import Connect4Game
 from connect4viewer import Connect4Viewer
 from event import Event
 
+SQUARE_SIZE = 100
+
 
 if __name__ == '__main__':
-    for i in range(2):
-            game_mode = 2
-            game = Connect4Game(2, 2)
-            view = Connect4Viewer(game=game)
-            view.initialize()
+    # for i in range(2):
+    #     game = Connect4Game(3, 0)
+    #     view = Connect4Viewer(game=game)
+    #     view.initialize()
 
-            running = True
-            while running:
-                if ((game._turn == 1) and (game.get_win() is None)):
-                    game.bot_place()
-                elif ((game._turn == -1) and (game.get_win() is None)):
-                    game.bot_place()
-                elif game.get_win() is not None:
-                    running = False
+    #     running = True
+    #     while running:
+    #         if ((game._turn == 1) and (game.get_win() is None)):
+    #             game.bot_place()
+    #         elif ((game._turn == -1) and (game.get_win() is None)):
+    #             game.bot_place()
+    #         elif game.get_win() is not None:
+    #             running = False
 
-                pygame.time.wait(1000)
+    #         pygame.time.wait(1000)
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        running = False
-                    if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                        if game.get_win() is None:
-                            game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
-                        else:
-                            game.reset_game()
+    #         for event in pygame.event.get():
+    #             if event.type == pygame.QUIT:
+    #                 running = False
+    #             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+    #                 if game.get_win() is None:
+    #                     game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
+    #                 else:
+    #                     game.reset_game()
 
-    pygame.quit()
+    # pygame.quit()
 
     # model = Model("./model_better_bot_type2_4layers")
     # # model = Model("./saved_model/my_model")
@@ -66,3 +67,37 @@ if __name__ == '__main__':
     #         nn_format()
     #         reset_game()
     #         i = i+1
+
+    total_games_won = 0
+    for i in range(10):
+        game = Connect4Game(3, 0)
+        view = Connect4Viewer(game=game)
+        view.initialize()
+        running = True
+        while running:
+            if ((game._turn == 1) and (game.get_win() is None)):
+                game.bot_place()
+            # elif ((game._turn == -1) and (game.get_win() is None)):
+            #     game.bot_place()
+
+            elif game.get_win() is not None:
+                if game.get_win() == 1:
+                    total_games_won += 1
+                    # print("won")
+                    running = False
+                else:
+                    # print("loss")
+                    running = False
+
+            pygame.time.wait(1000)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    if game.get_win() is None:
+                        game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
+                    else:
+                        game.reset_game()
+    percentage = "{:.2f}".format((total_games_won/10)*100)
+    print("Won games : " + percentage + "%")

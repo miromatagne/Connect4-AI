@@ -7,6 +7,11 @@ from bot import Bot
 from file_recording import FileRecording
 from event import Event
 
+EMPTY = 0
+ROW_COUNT = 6
+COLUMN_COUNT = 7
+WINDOW_LENGTH = 4
+
 
 class Connect4Game(Observable):
 
@@ -24,6 +29,7 @@ class Connect4Game(Observable):
         self.reset_game()
         self._player1 = Bot(self, player1, model=bot1_model)
         self._player2 = Bot(self, player2, model=bot2_model)
+        self.last_move = None
 
         # if game_mode == 0:
         #     self.bot = Bot(self, 0)
@@ -40,6 +46,7 @@ class Connect4Game(Observable):
         self._board = [[0 for _ in range(self._rows)]
                        for _ in range(self._cols)]
         self._starter = random.choice([-1, 1])
+        # print(self._starter)
         self._turn = self._starter
         # (self._turn)
         self._won = None
@@ -55,6 +62,7 @@ class Connect4Game(Observable):
         for r in range(self._rows):
             if self._board[c][r] == 0:
                 self._board[c][r] = self._turn
+                self.last_move = [c, r]
                 self.notify(Event.PIECE_PLACED, (c, r))
 
                 self.file_recording.write_to_history(self._round, self._board)
@@ -217,14 +225,17 @@ class Connect4Game(Observable):
 
         return new_one
 
-    def nn_format(self):
-        if win != 0:
-            current_board = np.load(state.filename)
-            output_move = current_board[:, :, 0]
-            np.save(state.outputname, output_move)
-
     def bot_place(self):
         if self._turn == 1:
             self._player1.make_move()
         else:
             self._player2.make_move()
+
+    def get_valid_locations(self):
+        free_cols = []
+        for i in range(COLUMN_COUNT):
+            if self._board[i][ROW_COUNT-1] == 0:
+                free_cols.append(i)
+                # print()
+
+        return free_cols
