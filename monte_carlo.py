@@ -19,7 +19,7 @@ class MonteCarlo(Bot):
     def __init__(self, game):
         super().__init__(game, bot_type=MONTE_CARLO)
 
-    def monte_carlo_tree_search(self, iterations, root, exploration_parameter, initial_turn):
+    def monte_carlo_tree_search(self, iterations, root, exploration_parameter):
         """
             Main function of MCTS, called whenever a move is needed.
 
@@ -28,15 +28,13 @@ class MonteCarlo(Bot):
             :param root: root tree, starting point of the algorithm (board of the game 
                 at the moment a move is wanted)
             :param exploration_parameter: factor used in the MCTS
-            :param initial_turn: turn of the player who uses MCTS (1 or -1)
 
             :return: column where to place the piece
         """
-        print(initial_turn)
         for i in range(iterations):
             node, turn = self.selection(
-                root, -1, exploration_parameter)
-            reward = self.simulation(node.state, turn, initial_turn)
+                root, 1, exploration_parameter)
+            reward = self.simulation(node.state, turn)
             self.backpropagation(node, reward, turn)
 
         ans = self.best_child(root, 0)
@@ -99,7 +97,7 @@ class MonteCarlo(Bot):
             turn *= -1
         return
 
-    def simulation(self, state_init, turn, intial_turn):
+    def simulation(self, state_init, turn):
         """
             Simulates random moves until the game is won by someone and returns areward.
             Until a winning (or losing) situation is obtained, random moves are performed.
@@ -107,7 +105,6 @@ class MonteCarlo(Bot):
 
             :param state_init: current state from which we should end up finding a winning situation
             :param turn: 1 or -1 depending on whose turn it is
-            :param initial_turn: initial turn of the MCTS algorithm bot (-1 or 1)
 
             :return: a reward
         """
