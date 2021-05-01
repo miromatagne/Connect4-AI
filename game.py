@@ -18,6 +18,11 @@ from event import Event
 
 SQUARE_SIZE = 100
 
+MONTE_CARLO = "MONTE_CARLO"
+MINIMAX = "MINIMAX"
+RANDOM = "RANDOM"
+RANDOM_IMPR = "RANDOM_IMPR"
+
 
 if __name__ == '__main__':
     # for i in range(2):
@@ -70,7 +75,7 @@ if __name__ == '__main__':
 
     total_games_won = 0
     for i in range(10):
-        game = Connect4Game(3, 0)
+        game = Connect4Game(MINIMAX, RANDOM)
         view = Connect4Viewer(game=game)
         view.initialize()
         running = True
@@ -89,7 +94,7 @@ if __name__ == '__main__':
                     # print("loss")
                     running = False
 
-            pygame.time.wait(1000)
+            # pygame.time.wait(1000)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

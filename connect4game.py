@@ -6,11 +6,18 @@ from observable import Observable
 from bot import Bot
 from file_recording import FileRecording
 from event import Event
+from monte_carlo import MonteCarlo
+from minimax import MiniMax
 
 EMPTY = 0
 ROW_COUNT = 6
 COLUMN_COUNT = 7
 WINDOW_LENGTH = 4
+
+MONTE_CARLO = "MONTE_CARLO"
+MINIMAX = "MINIMAX"
+RANDOM = "RANDOM"
+RANDOM_IMPR = "RANDOM_IMPR"
 
 
 class Connect4Game(Observable):
@@ -27,16 +34,17 @@ class Connect4Game(Observable):
         self.moves = {1: [], -1: []}
         self.file_recording = FileRecording()
         self.reset_game()
-        self._player1 = Bot(self, player1, model=bot1_model)
-        self._player2 = Bot(self, player2, model=bot2_model)
+        if player1 == MONTE_CARLO:
+            self._player1 = MonteCarlo(self)
+        elif player1 == MINIMAX:
+            self._player1 = MiniMax(self)
+        else:
+            self._player1 = Bot(self, bot_type=player1)
+        if player2 == MONTE_CARLO:
+            self._player2 = MonteCarlo(self)
+        elif player2 == MINIMAX:
+            self._player2 = MiniMax(self)
         self.last_move = None
-
-        # if game_mode == 0:
-        #     self.bot = Bot(self, 0)
-        # elif game_mode == 1:
-        #     self.bot = Bot(self, 1)
-        # elif game_mode == 2:
-        #     self.bot = Bot(self, 2)
 
     def reset_game(self):
         """
