@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     total_games_won = 0
     for i in range(10):
-        game = Connect4Game(MINIMAX, RANDOM)
+        game = Connect4Game(MONTE_CARLO, RANDOM)
         view = Connect4Viewer(game=game)
         view.initialize()
         running = True

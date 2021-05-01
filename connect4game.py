@@ -244,6 +244,5 @@ class Connect4Game(Observable):
         for i in range(COLUMN_COUNT):
             if self._board[i][ROW_COUNT-1] == 0:
                 free_cols.append(i)
-                # print()
 
         return free_cols

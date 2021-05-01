@@ -4,6 +4,8 @@ from observer import Observer
 import tensorflow as tf
 import math
 from copy import copy, deepcopy
+from node import Node
+
 YELLOW_PLAYER = 1
 RED_PLAYER = -1
 
@@ -15,30 +17,6 @@ RANDOM = "RANDOM"
 RANDOM_IMPR = "RANDOM_IMPR"
 ROW_COUNT = 6
 COLUMN_COUNT = 7
-
-
-class Node():
-    def __init__(self, state, parent=None):
-        self.visits = 1
-        self.reward = 0.0
-        self.state = state  # Instance of Connect4Game
-        self.children = []
-        self.children_move = []
-        self.parent = parent
-
-    def add_child(self, child_state, move):
-        child = Node(child_state, parent=self)
-        self.children.append(child)
-        self.children_move.append(move)
-
-    def update(self, reward):
-        self.reward += reward
-        self.visits += 1
-
-    def fully_explored(self):
-        if len(self.children) == len(self.state.get_valid_locations()):
-            return True
-        return False
 
 
 class Bot(Observer):
@@ -94,7 +72,8 @@ class Bot(Observer):
             # print(column)
         elif self._type == MONTE_CARLO:
             o = Node(self._game.copy_state())
-            column = self.monte_carlo_tree_search(100, o, 2.0)
+            column = self.monte_carlo_tree_search(
+                100, o, 2.0, self._game._turn)
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]
