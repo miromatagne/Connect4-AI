@@ -4,15 +4,19 @@ from observer import Observer
 import tensorflow as tf
 import math
 from copy import copy, deepcopy
+from node import Node
+
 YELLOW_PLAYER = 1
 RED_PLAYER = -1
 
 PLAYERS = {1: "Yellow", -1: "Red"}
 
-EMPTY = 0
+MONTE_CARLO = "MONTE_CARLO"
+MINIMAX = "MINIMAX"
+RANDOM = "RANDOM"
+RANDOM_IMPR = "RANDOM_IMPR"
 ROW_COUNT = 6
 COLUMN_COUNT = 7
-WINDOW_LENGTH = 4
 
 
 class Bot(Observer):
@@ -22,170 +26,12 @@ class Bot(Observer):
         # Bot type determines how the bot picks his moves
         self._type = bot_type
 
-        #print("Created bot of type " + str(self._type))
         self._model = None
         if model is not None:
             self._model = model
 
     def update(self, obj, event, *argv):
         print(obj)
-
-    def drop_piece(self, board, row, col, piece):
-        # print(col, row)
-        board[col][row] = piece
-
-    def get_next_open_row(self, board, col):
-        for r in range(ROW_COUNT):
-            if board[col][r] == 0:
-                return r
-
-
-    def winning_move(self, board, piece):
-        # Check horizontal locations for win
-        for c in range(COLUMN_COUNT-3):
-            for r in range(ROW_COUNT):
-                if board[c][r] == piece and board[c+1][r] == piece and board[c+2][r] == piece and board[c+3][r] == piece:
-                    # print("horizontal")
-                    return True
-
-        # Check vertical locations for win
-        for c in range(COLUMN_COUNT):
-            for r in range(ROW_COUNT-3):
-                if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece:
-                    # print("vertical")
-                    return True
-
-        # Check positively sloped diaganols
-        for c in range(COLUMN_COUNT-3):
-            for r in range(ROW_COUNT-3):
-                if board[c][r] == piece and board[c+1][r+1] == piece and board[c+2][r+2] == piece and board[c+3][r+3] == piece:
-                    # print("pdiago")
-                    return True
-
-        # Check negatively sloped diaganols
-        for c in range(COLUMN_COUNT-3):
-            for r in range(3, ROW_COUNT):
-                if board[c][r] == piece and board[c+1][r-1] == piece and board[c+2][r-2] == piece and board[c+3][r-3] == piece:
-                    # print("ndiago")
-                    return True
-        return False
-
-    def is_terminal_node(self, board):
-        # print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board,
-        #                                                                          self._game._turn) or self.get_valid_locations(board) is None)
-        return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn) or self.get_valid_locations(board) is None
-
-    def evaluate_window(self, window, piece):
-        score = 0
-        opp_piece = self._game._turn*-1
-        if piece == self._game._turn*-1:
-            opp_piece = self._game._turn
-
-        if window.count(piece) == 4:
-            score += 100
-        elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-            score += 5
-        elif window.count(piece) == 2 and window.count(EMPTY) == 2:
-            score += 2
-
-        if window.count(opp_piece) == 3 and window.count(EMPTY) == 1:
-            score -= 4
-
-        return score
-
-    def score_position(self, board, piece):
-        score = 0
-        # Score center column
-        center_array = [int(i) for i in list(board[COLUMN_COUNT//2][:])]
-        center_count = center_array.count(piece)
-        score += center_count * 3
-
-        # Score Horizontal
-        for r in range(ROW_COUNT):
-            row_array = [int(i) for i in list(board[:][r])]
-            for c in range(COLUMN_COUNT-3):
-                window = row_array[c:c+WINDOW_LENGTH]
-                score += self.evaluate_window(window, piece)
-
-        # Score Vertical
-        for c in range(COLUMN_COUNT):
-            col_array = [int(i) for i in list(board[c][:])]
-            for r in range(ROW_COUNT-3):
-                window = col_array[r:r+WINDOW_LENGTH]
-                score += self.evaluate_window(window, piece)
-
-        # Score posiive sloped diagonal
-        for r in range(ROW_COUNT-3):
-            for c in range(COLUMN_COUNT-3):
-                window = [board[c+i][r+i] for i in range(WINDOW_LENGTH)]
-                score += self.evaluate_window(window, piece)
-
-        for r in range(ROW_COUNT-3):
-            for c in range(COLUMN_COUNT-3):
-                window = [board[c+i][r+3-i] for i in range(WINDOW_LENGTH)]
-                score += self.evaluate_window(window, piece)
-
-        return score
-
-    def minimax(self, board, depth, alpha, beta, maximizingPlayer):
-        valid_locations = self.get_valid_locations(board)
-        is_terminal = self.is_terminal_node(board)
-       
-        if depth == 0 or is_terminal:
-            if is_terminal:
-                if self.winning_move(board, self._game._turn):
-                    return (None, math.inf)
-                elif self.winning_move(board, self._game._turn*-1):
-                    return (None, -math.inf)
-                else:  # Game is over, no more valid moves
-                    # print("WHAT 3")
-                    return (None, 0)
-            else:  # Depth is zero
-                # print("kaka")
-                return (None, self.score_position(board, self._game._turn))
-        elif maximizingPlayer:
-            # print("depth ", depth)
-            value = -1000000000000000000000
-            column = random.choice(valid_locations)
-            for col in valid_locations:
-                row = self.get_next_open_row(board, col)
-            
-                b_copy = []
-                for i in range(0, len(board)):
-                    b_copy.append(board[i].copy())
-                # b_copy = deepcopy(board)
-                # if(row is not None and col is not None):
-                self.drop_piece(b_copy, row, col, self._game._turn)
-                new_score = self.minimax(
-                    b_copy, depth-1, alpha, beta, False)[1]
-                # print(new_score)
-                if new_score > value or new_score==math.inf:
-                    value = new_score
-                    column = col
-                alpha = max(alpha, value)
-                if alpha >= beta:
-                    break
-            return column, value
-
-        else:  # Minimizing player
-            value = 1000000000000000000000
-            column = random.choice(valid_locations)
-            for col in valid_locations:
-                row = self.get_next_open_row(board, col)
-                b_copy = []
-                for i in range(0, len(board)):
-                    b_copy.append(board[i].copy())
-                # b_copy = deepcopy(board)
-                # if(row is not None and col is not None):
-                self.drop_piece(b_copy, row, col, self._game._turn*-1)
-                new_score = self.minimax(b_copy, depth-1, alpha, beta, True)[1]
-                if new_score < value or new_score==-math.inf:
-                    value = new_score
-                    column = col
-                beta = min(beta, value)
-                if alpha >= beta:
-                    break
-            return column, value
 
     def make_move(self):
         """
@@ -198,7 +44,7 @@ class Bot(Observer):
         column = None
         # In case the bot type is 0, the bot checks for winning moves, and if there aren't,
         # then picks a valid random move.
-        if self._type == 0:
+        if self._type == RANDOM:
             win_col = self.get_winning_move()
             if win_col is not None:
                 column = win_col
@@ -207,7 +53,7 @@ class Bot(Observer):
         # In case the bot type is 1, the bot checks for winning moves, and if there aren't,
         # then checks if there is any move that blocks a direct winning move for the opponent.
         # If there is no such move, it picks a valid random move.
-        elif self._type == 1:
+        elif self._type == RANDOM_IMPR:
             win_col = self.get_winning_move()
             if win_col is not None:
                 #print("Winning column :", win_col)
@@ -220,10 +66,14 @@ class Bot(Observer):
                 else:
                     column = self.get_random_move()
                     #print("Random move", column)
-        elif self._type == 2:
+        elif self._type == MINIMAX:
             column, minimax_score = self.minimax(
-                self._game._board, 5, -math.inf, math.inf, True)
+                self._game._board, 6, -math.inf, math.inf, True)
             # print(column)
+        elif self._type == MONTE_CARLO:
+            o = Node(self._game.copy_state())
+            column = self.monte_carlo_tree_search(
+                100, o, 2.0, self._game._turn)
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]
@@ -270,7 +120,7 @@ class Bot(Observer):
                     break
         return column
 
-    def get_valid_locations(self,board):
+    def get_valid_locations(self, board):
         free_cols = []
         for i in range(COLUMN_COUNT):
             if board[i][ROW_COUNT-1] == 0:
@@ -286,7 +136,7 @@ class Bot(Observer):
 
             :return: valid random column 
         """
-        free_cols = self.get_valid_locations( self._game.board)
+        free_cols = self.get_valid_locations(self._game._board)
         column = random.choice(free_cols)
         return column
 
