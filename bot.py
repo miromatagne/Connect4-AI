@@ -31,7 +31,7 @@ class Bot(Observer):
         print(obj)
 
     def drop_piece(self, board, row, col, piece):
-        print(col, row)
+        # print(col, row)
         board[col][row] = piece
 
     def get_next_open_row(self, board, col):
@@ -145,7 +145,7 @@ class Bot(Observer):
                 return (None, self.score_position(board, self._game._turn))
         elif maximizingPlayer:
             # print("depth ", depth)
-            value = -math.inf
+            value = -1000000000000000000000
             column = random.choice(valid_locations)
             for col in valid_locations:
                 row = self.get_next_open_row(board, col)
@@ -159,7 +159,7 @@ class Bot(Observer):
                 new_score = self.minimax(
                     b_copy, depth-1, alpha, beta, False)[1]
                 # print(new_score)
-                if new_score > value:
+                if new_score > value or new_score==math.inf:
                     value = new_score
                     column = col
                 alpha = max(alpha, value)
@@ -168,7 +168,7 @@ class Bot(Observer):
             return column, value
 
         else:  # Minimizing player
-            value = math.inf
+            value = 1000000000000000000000
             column = random.choice(valid_locations)
             for col in valid_locations:
                 row = self.get_next_open_row(board, col)
@@ -179,7 +179,7 @@ class Bot(Observer):
                 # if(row is not None and col is not None):
                 self.drop_piece(b_copy, row, col, self._game._turn*-1)
                 new_score = self.minimax(b_copy, depth-1, alpha, beta, True)[1]
-                if new_score < value:
+                if new_score < value or new_score==-math.inf:
                     value = new_score
                     column = col
                 beta = min(beta, value)
