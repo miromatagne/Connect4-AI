@@ -1,3 +1,18 @@
+"""
+    This class is responsible for the Minimax algorithm.
+    The algorithm can be set to different depths which corresponds to the number of round that the Minimax will simulate. 
+    At each depth, the algorithm will simulate up to 7 boards, each having a piece that has been dropped in a free column. So with depth 1, we will have 7 boards to analyse, with depth 2 : 49 ,...
+    Through a system of reward each board will be attributed a score. The Minimax will then either try to minimise or maximise the rewards depending on the depth. Indeed, because we are using multiple 
+    depth, the minimax algorithm will simulate in alternance the possible moves of the current player and the ones of the adversary. If the current player is the one using the minimax algorithm,
+    the algorithm will consider him as the maximising player, hence trying to maximise the reward when possible. The algorithm will also consider that the adversary plays as good as possible (with
+    the information available with the depth chosen) and hence try to minimise the reward when possible. 
+    As the minimax algorithm is used to determine which column to place the piece, the final choice is made based on the 7 boards possible with the score updated through the reward procedure describe above.
+    Note that the larger the depth, the slower the execution.
+    In order to avoid unnecessary exploration of boards, an alpha beta pruning has been implemented.
+
+
+"""
+
 from bot import Bot
 import random
 import math
@@ -18,50 +33,73 @@ class MiniMax(Bot):
         super().__init__(game, bot_type=MINIMAX)
 
     def drop_piece(self, board, row, col, piece):
-        # print(col, row)
+        """
+        Drop a piece in the board at the specified position
+        :param board: board with all the pieces that have been placed
+        :param col: one of the row of the board
+        :param col: one of the column of the board
+        :param piece: 1 or -1 depending on whose turn it is
+        """
         board[col][row] = piece
 
     def get_next_open_row(self, board, col):
+        """
+        Return the first row which does not have a piece in the specified column (col)
+        :param board: board with all the pieces that have been placed
+        :param col: one of the column of the board
+        : return: row number
+        """
         for r in range(ROW_COUNT):
             if board[col][r] == 0:
                 return r
 
     def winning_move(self, board, piece):
+        """
+        Check if the game has been won
+        :param board: board with all the pieces that have been placed
+        :param piece: 1 or -1 depending on whose turn it is
+        """
         # Check horizontal locations for win
         for c in range(COLUMN_COUNT-3):
             for r in range(ROW_COUNT):
                 if board[c][r] == piece and board[c+1][r] == piece and board[c+2][r] == piece and board[c+3][r] == piece:
-                    # print("horizontal")
                     return True
 
         # Check vertical locations for win
         for c in range(COLUMN_COUNT):
             for r in range(ROW_COUNT-3):
                 if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece:
-                    # print("vertical")
                     return True
 
         # Check positively sloped diaganols
         for c in range(COLUMN_COUNT-3):
             for r in range(ROW_COUNT-3):
                 if board[c][r] == piece and board[c+1][r+1] == piece and board[c+2][r+2] == piece and board[c+3][r+3] == piece:
-                    # print("pdiago")
                     return True
 
         # Check negatively sloped diaganols
         for c in range(COLUMN_COUNT-3):
             for r in range(3, ROW_COUNT):
                 if board[c][r] == piece and board[c+1][r-1] == piece and board[c+2][r-2] == piece and board[c+3][r-3] == piece:
-                    # print("ndiago")
                     return True
         return False
 
+
     def is_terminal_node(self, board):
-        # print(self.winning_move(board, self._game._turn*-1) or self.winning_move(board,
-        #                                                                          self._game._turn) or self.get_valid_locations(board) is None)
+        """
+        Determines wheter the game is finished or not
+        :param board: board with all the pieces that have been placed
+        :return: boolean that determines wheter the game is finish or not 
+        """
         return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn) or self.get_valid_locations(board) is None
 
     def evaluate_window(self, window, piece):
+        """
+        Evaluates the score of a portion of the board
+        :param window: portion of the board with all the pieces that have been placed
+        :param piece: 1 or -1 depending on whose turn it is
+        :return: score of the window
+        """
         score = 0
         opp_piece = self._game._turn*-1
         if piece == self._game._turn*-1:
@@ -80,6 +118,15 @@ class MiniMax(Bot):
         return score
 
     def score_position(self, board, piece):
+        """
+        Main function that handles the scoring mechanism.
+        Handle the score for the minimax algorithm, the score is computed independently of which piece has just been dropped. This is a global score that looks at the whole board 
+        :param board: board with all the pieces that have been placed
+        :param piece: 1 or -1 depending on whose turn it is
+        :return: score of the board
+
+        """
+
         score = 0
         # Score center column
         center_array = [int(i) for i in list(board[COLUMN_COUNT//2][:])]
@@ -114,6 +161,17 @@ class MiniMax(Bot):
         return score
 
     def minimax(self, board, depth, alpha, beta, maximizingPlayer):
+         """
+            Main function of minimax, called whenever a move is needed.
+
+            :param depth: number of iterations the Minimax algorith will run for
+                (the larger the depth the longer the algorithm takes)
+            :alpha: used for the pruning  
+            :beta: used for the pruning
+            :maximizingPlayer: boolean to specify if the algorithm should maximize or minimize the reward
+
+            :return: column where to place the piece
+        """
         valid_locations = self.get_valid_locations(board)
         is_terminal = self.is_terminal_node(board)
 
@@ -124,13 +182,10 @@ class MiniMax(Bot):
                 elif self.winning_move(board, self._game._turn*-1):
                     return (None, -math.inf)
                 else:  # Game is over, no more valid moves
-                    # print("WHAT 3")
                     return (None, 0)
             else:  # Depth is zero
-                # print("kaka")
                 return (None, self.score_position(board, self._game._turn))
         elif maximizingPlayer:
-            # print("depth ", depth)
             value = -math.inf
             column = random.choice(valid_locations)
             for col in valid_locations:
@@ -139,12 +194,9 @@ class MiniMax(Bot):
                 b_copy = []
                 for i in range(0, len(board)):
                     b_copy.append(board[i].copy())
-                # b_copy = deepcopy(board)
-                # if(row is not None and col is not None):
                 self.drop_piece(b_copy, row, col, self._game._turn)
                 new_score = self.minimax(
                     b_copy, depth-1, alpha, beta, False)[1]
-                # print(new_score)
                 if new_score > value:
                     value = new_score
                     column = col
@@ -161,8 +213,6 @@ class MiniMax(Bot):
                 b_copy = []
                 for i in range(0, len(board)):
                     b_copy.append(board[i].copy())
-                # b_copy = deepcopy(board)
-                # if(row is not None and col is not None):
                 self.drop_piece(b_copy, row, col, self._game._turn*-1)
                 new_score = self.minimax(b_copy, depth-1, alpha, beta, True)[1]
                 if new_score < value:
