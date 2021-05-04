@@ -73,7 +73,7 @@ class Bot(Observer):
         elif self._type == MONTE_CARLO:
             o = Node(self._game.copy_state())
             column = self.monte_carlo_tree_search(
-                100, o, 2.0, self._game._turn)
+                300, o, 2.0)
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]
