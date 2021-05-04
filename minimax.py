@@ -1,12 +1,12 @@
 """
     This class is responsible for the Minimax algorithm.
-    The algorithm can be set to different depths which corresponds to the number of round that the Minimax will simulate. 
     At each depth, the algorithm will simulate up to 7 boards, each having a piece that has been dropped in a free column. So with depth 1, we will have 7 boards to analyse, with depth 2 : 49 ,...
-    Through a system of reward each board will be attributed a score. The Minimax will then either try to minimise or maximise the rewards depending on the depth. Indeed, because we are using multiple 
-    depth, the minimax algorithm will simulate in alternance the possible moves of the current player and the ones of the adversary. If the current player is the one using the minimax algorithm,
-    the algorithm will consider him as the maximising player, hence trying to maximise the reward when possible. The algorithm will also consider that the adversary plays as good as possible (with
-    the information available with the depth chosen) and hence try to minimise the reward when possible. 
-    As the minimax algorithm is used to determine which column to place the piece, the final choice is made based on the 7 boards possible with the score updated through the reward procedure describe above.
+    Through a system of reward each board will be attributed a score. The Minimax will then either try to minimise or maximise the rewards depending on the depth (odd or even). Indeed, because we are using multiple 
+    depth, the minimax algorithm will simulate in alternance the possible moves of the current player and the ones of the adversary (creating Min nodes and max nodes). The player that needs to decide where to 
+    drop a piece on the current board is considered as the maximising player, hence trying to maximise the reward when a max nodes is encountered. The algorithm will also consider that the adversary plays as good as possible (with
+    the information available with the depth chosen) and hence try to minimise the reward when possible (minimizing player). 
+    So after creating all the boards of the tree, at each depth, a board will be selected based on the reward and on the type of nodes (min or max node) starting from the bottom of the tree.
+    The final choice is made based on the 7 boards possible with the score updated through the reward procedure describe above.
     Note that the larger the depth, the slower the execution.
     In order to avoid unnecessary exploration of boards, an alpha beta pruning has been implemented.
 
@@ -163,11 +163,11 @@ class MiniMax(Bot):
     def minimax(self, board, depth, alpha, beta, maximizingPlayer):
          """
             Main function of minimax, called whenever a move is needed.
-
+            Recursive function, depth of the recursion being determined by the parameter depth.
             :param depth: number of iterations the Minimax algorith will run for
                 (the larger the depth the longer the algorithm takes)
-            :alpha: used for the pruning  
-            :beta: used for the pruning
+            :alpha: used for the pruning, correspond to the lowest value of the range values of the node
+            :beta: used for the pruning, correspond to the hihest value of the range values of the node
             :maximizingPlayer: boolean to specify if the algorithm should maximize or minimize the reward
 
             :return: column where to place the piece
