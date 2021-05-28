@@ -16,14 +16,14 @@ MONTE_CARLO = "MONTE_CARLO"
 
 
 class MonteCarlo(Bot):
-    def __init__(self, game):
-        super().__init__(game, bot_type=MONTE_CARLO)
+    def __init__(self, game, iteration):
+        super().__init__(game, bot_type=MONTE_CARLO, iteration=iteration)
 
     def monte_carlo_tree_search(self, iterations, root, exploration_parameter):
         """
             Main function of MCTS, called whenever a move is needed.
 
-            :param iterations: number of iterations the MCTS algorith will run for
+            :param iterations: number of iterations the MCTS algorithm will run for
                 (the more iterations the longer the algorithm takes)
             :param root: root tree, starting point of the algorithm (board of the game 
                 at the moment a move is wanted)

@@ -21,10 +21,14 @@ COLUMN_COUNT = 7
 
 class Bot(Observer):
 
-    def __init__(self, game, bot_type=None, model=None):
+    def __init__(self, game, bot_type=None, model=None, depth=None, iteration=None):
         self._game = game
         # Bot type determines how the bot picks his moves
         self._type = bot_type
+        if self._type == MINIMAX:
+            self._depth = depth
+        elif self._type == MONTE_CARLO:
+            self._iteration = iteration    
 
         self._model = None
         if model is not None:
@@ -42,7 +46,7 @@ class Bot(Observer):
         """
         #print(PLAYERS[self._game._turn] + " is about to play :")
         column = None
-        # In case the bot type is 0, the bot checks for winning moves, and if there aren't,
+        # In case the bot type is RANDOM, the bot checks for winning moves, and if there aren't,
         # then picks a valid random move.
         if self._type == RANDOM:
             win_col = self.get_winning_move()
@@ -50,7 +54,7 @@ class Bot(Observer):
                 column = win_col
             else:
                 column = self.get_random_move()
-        # In case the bot type is 1, the bot checks for winning moves, and if there aren't,
+        # In case the bot type is RANDOM IMPROVED, the bot checks for winning moves, and if there aren't,
         # then checks if there is any move that blocks a direct winning move for the opponent.
         # If there is no such move, it picks a valid random move.
         elif self._type == RANDOM_IMPR:
@@ -68,12 +72,11 @@ class Bot(Observer):
                     #print("Random move", column)
         elif self._type == MINIMAX:
             column, minimax_score = self.minimax(
-                self._game._board, 6, -math.inf, math.inf, True)
+                self._game._board, self._depth, -math.inf, math.inf, True)
             # print(column)
         elif self._type == MONTE_CARLO:
             o = Node(self._game.copy_state())
-            column = self.monte_carlo_tree_search(
-                100, o, 2.0, self._game._turn)
+            column = self.monte_carlo_tree_search(self._iteration, o, 2.0) #, self._game._turn  #initial iteration = 100 
         else:
             flat_board = [
                 [item for sublist in self._game._board for item in sublist]]

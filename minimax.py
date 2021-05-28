@@ -29,8 +29,8 @@ MINIMAX = "MINIMAX"
 
 
 class MiniMax(Bot):
-    def __init__(self, game):
-        super().__init__(game, bot_type=MINIMAX)
+    def __init__(self, game, depth):
+        super().__init__(game, bot_type=MINIMAX, depth=depth)
 
     def drop_piece(self, board, row, col, piece):
         """
@@ -161,7 +161,7 @@ class MiniMax(Bot):
         return score
 
     def minimax(self, board, depth, alpha, beta, maximizingPlayer):
-         """
+        """
             Main function of minimax, called whenever a move is needed.
             Recursive function, depth of the recursion being determined by the parameter depth.
             :param depth: number of iterations the Minimax algorith will run for

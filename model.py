@@ -1,7 +1,7 @@
 import tensorflow as tf
 from connect4game import Connect4Game
 from connect4viewer import Connect4Viewer
-
+import pygame
 
 class Model():
 
@@ -38,6 +38,7 @@ class Model():
                     else:
                         # print("loss")
                         running = False
-        percentage = "{:.2f}".format((total_games_won/nb_rep)*100)
-        print("Won games : " + percentage + "%")
+                # pygame.time.wait(2000)
+        percentage = (total_games_won/nb_rep)*100
+        print("Won games : " + str(percentage) + "%")
         return percentage

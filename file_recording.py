@@ -40,19 +40,19 @@ class FileRecording():
         winner_boards = np.zeros((21, 7, 6))
         last_round = 0
 
-        if started == 0:
+        if started == 0: #The winner did not start the game
             winner_boards[:len(current_game),:,:] = current_game[::2,:,:]
-        else:
+        else: #The winner started the game
             winner_boards[:len(current_game),:,:] = current_game[1::2,:,:]
-        if turn == -1:
+        if turn == -1: #Ensure that winner pieces are set to 1
             winner_boards *= -1
-
-        for round in range(1, winner_boards.shape[0]):  # Skip first round
+        #Detect the last board of the current game 
+        for round in range(1, winner_boards.shape[0]):  #Skip first round
             current_board = np.all(winner_boards[round] == 0)
             # print(-winner_boards[round])
             # print(current_board)
             if current_board:
-                last_round = round # round where the last coin is placed
+                last_round = round #Round where the last coin is placed
                 break
 
         encoding = []

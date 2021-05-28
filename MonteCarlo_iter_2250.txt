@@ -1,0 +1,7 @@
+
+100 games
+iteration of MonteCarlo=2250
+Minimax Accuracy , Average time per game , Average max time for single move
+        45.00 ,        88.555 ,        30.988
+MonteCarlo Accuracy , Average time per game , Average max time for single move  (param of MonteCarlo: explo=2.0)
+        55.00 ,        88.555 ,        4.173

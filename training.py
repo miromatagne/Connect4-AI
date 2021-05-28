@@ -16,24 +16,12 @@ class Training():
         # with tf.device('/GPU:0'):
         inputs = tf.keras.Input(shape = (42,))
         x = tf.keras.layers.Dense(256, activation=tf.nn.relu)(inputs)
-        #hidden = tf.keras.layers.Dense(256, activation=tf.nn.relu)(x)
-        self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
+        hidden = tf.keras.layers.Dense(256, activation=tf.nn.relu)(x)
+        self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(hidden)
         self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
 
         # Define loss function, create optimizer and create accuracy evaluation
         self._model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-    # def define_loss_function(self):
-    #     loss_function = tf.nn.softmax_cross_entropy_with_logits_v2(logits=self._outputs, labels=y)
-    #     self._loss = tf.reduce_mean(loss_function)
-
-    # def create_optimizer(self):
-    #     learning_step = tf.train.AdamOptimizer(0.0001)
-    #     optimiser = learning_step.minimize(self._loss)
-
-    # def create_accuracy_evaluation(self):
-    #     correct = tf.equal(tf.argmax(self._outputs, axis=1), tf.argmax(y, axis=1))
-    #     acc = tf.reduce_mean(tf.cast(correct, 'float'))
 
     def split_data(self, input_samples, output_samples, test_split):
         # Reshape input samples
@@ -70,5 +58,6 @@ class Training():
         print(loss, acc)
 
     def save_model(self):
-        self._model.save('./model_better_bot_type2_4layers')
+        # self._model.save('./model_better_bot_type2_4layers')
+        self._model.save('./model_better_bot_type2_4layersbis')
         # self._model.save('./saved_model/my_model')
