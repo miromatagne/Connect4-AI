@@ -1,3 +1,9 @@
+"""
+    This class handles the different bots that were used.
+    It includes a Random Bot, an Improved Random Bot, the MCTS bot,
+    and the MiniMax bot.
+"""
+
 import numpy as np
 import random
 from observer import Observer
