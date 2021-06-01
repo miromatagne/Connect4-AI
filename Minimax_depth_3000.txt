@@ -1,3 +1,0 @@
-
-100 games
-iteration of Minimax=5

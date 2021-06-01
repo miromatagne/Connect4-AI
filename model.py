@@ -38,7 +38,7 @@ class Model():
                     else:
                         # print("loss")
                         running = False
-                # pygame.time.wait(2000)
+                pygame.time.wait(1000)
         percentage = (total_games_won/nb_rep)*100
         print("Won games : " + str(percentage) + "%")
         return percentage

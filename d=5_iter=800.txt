@@ -1,0 +1,5 @@
+
+400 games
+iteration of MonteCarlo=800 depth of Minimax=5
+Accuracy , Average time per game , Average max time per move , Accuracy , Average time per game , Average max time per move
+        45.75 ,        16.822 ,        1.670,        54.25 ,        16.822 ,        2.293
