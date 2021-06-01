@@ -9,8 +9,6 @@
     The final choice is made based on the 7 boards possible with the score updated through the reward procedure describe above.
     Note that the larger the depth, the slower the execution.
     In order to avoid unnecessary exploration of boards, an alpha beta pruning has been implemented.
-
-
 """
 
 from bot import Bot
@@ -34,20 +32,20 @@ class MiniMax(Bot):
 
     def drop_piece(self, board, row, col, piece):
         """
-        Drop a piece in the board at the specified position
-        :param board: board with all the pieces that have been placed
-        :param col: one of the row of the board
-        :param col: one of the column of the board
-        :param piece: 1 or -1 depending on whose turn it is
+            Drop a piece in the board at the specified position
+            :param board: board with all the pieces that have been placed
+            :param col: one of the row of the board
+            :param col: one of the column of the board
+            :param piece: 1 or -1 depending on whose turn it is
         """
         board[col][row] = piece
 
     def get_next_open_row(self, board, col):
         """
-        Return the first row which does not have a piece in the specified column (col)
-        :param board: board with all the pieces that have been placed
-        :param col: one of the column of the board
-        : return: row number
+            Return the first row which does not have a piece in the specified column (col)
+            :param board: board with all the pieces that have been placed
+            :param col: one of the column of the board
+            : return: row number
         """
         for r in range(ROW_COUNT):
             if board[col][r] == 0:
@@ -55,9 +53,9 @@ class MiniMax(Bot):
 
     def winning_move(self, board, piece):
         """
-        Check if the game has been won
-        :param board: board with all the pieces that have been placed
-        :param piece: 1 or -1 depending on whose turn it is
+            Check if the game has been won
+            :param board: board with all the pieces that have been placed
+            :param piece: 1 or -1 depending on whose turn it is
         """
         # Check horizontal locations for win
         for c in range(COLUMN_COUNT-3):
@@ -84,21 +82,20 @@ class MiniMax(Bot):
                     return True
         return False
 
-
     def is_terminal_node(self, board):
         """
-        Determines wheter the game is finished or not
-        :param board: board with all the pieces that have been placed
-        :return: boolean that determines wheter the game is finish or not 
+            Determines wheter the game is finished or not
+            :param board: board with all the pieces that have been placed
+            :return: boolean that determines wheter the game is finish or not 
         """
         return self.winning_move(board, self._game._turn*-1) or self.winning_move(board, self._game._turn) or self.get_valid_locations(board) is None
 
     def evaluate_window(self, window, piece):
         """
-        Evaluates the score of a portion of the board
-        :param window: portion of the board with all the pieces that have been placed
-        :param piece: 1 or -1 depending on whose turn it is
-        :return: score of the window
+            Evaluates the score of a portion of the board
+            :param window: portion of the board with all the pieces that have been placed
+            :param piece: 1 or -1 depending on whose turn it is
+            :return: score of the window
         """
         score = 0
         opp_piece = self._game._turn*-1
@@ -119,12 +116,11 @@ class MiniMax(Bot):
 
     def score_position(self, board, piece):
         """
-        Main function that handles the scoring mechanism.
-        Handle the score for the minimax algorithm, the score is computed independently of which piece has just been dropped. This is a global score that looks at the whole board 
-        :param board: board with all the pieces that have been placed
-        :param piece: 1 or -1 depending on whose turn it is
-        :return: score of the board
-
+            Main function that handles the scoring mechanism.
+            Handle the score for the minimax algorithm, the score is computed independently of which piece has just been dropped. This is a global score that looks at the whole board 
+            :param board: board with all the pieces that have been placed
+            :param piece: 1 or -1 depending on whose turn it is
+            :return: score of the board
         """
 
         score = 0
@@ -161,7 +157,7 @@ class MiniMax(Bot):
         return score
 
     def minimax(self, board, depth, alpha, beta, maximizingPlayer):
-         """
+        """
             Main function of minimax, called whenever a move is needed.
             Recursive function, depth of the recursion being determined by the parameter depth.
             :param depth: number of iterations the Minimax algorith will run for

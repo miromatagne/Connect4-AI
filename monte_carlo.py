@@ -79,24 +79,6 @@ class MonteCarlo(Bot):
         node.add_child(new_state, col)
         return node.children[-1]
 
-    def backpropagation(self, node, reward, turn):
-        """
-            Update the rewards of all the ancestors of a node. The reward is sometimes
-            added and sometimes substracted from the current reward, since it takes
-            into account the fact a winning move from the current player should be
-            encouraged, but a winning move from the opponent should be discouraged.
-
-            :param node: current node from which we start the backtracking
-            :param reward: reward corresponding to that particular node
-            :param turn: 1 or -1 depending on whose turn it is
-        """
-        while node != None:
-            node.visits += 1
-            node.reward -= turn*reward
-            node = node.parent
-            turn *= -1
-        return
-
     def simulation(self, state_init, turn):
         """
             Simulates random moves until the game is won by someone and returns areward.
@@ -123,6 +105,25 @@ class MonteCarlo(Bot):
         else:
             reward = 0
         return reward
+
+    def backpropagation(self, node, reward, turn):
+        """
+            Update the rewards of all the ancestors of a node. The reward is sometimes
+            added and sometimes substracted from the current reward, since it takes
+            into account the fact a winning move from the current player should be
+            encouraged, but a winning move from the opponent should be discouraged.
+
+            :param node: current node from which we start the backtracking
+            :param reward: reward corresponding to that particular node
+            :param turn: 1 or -1 depending on whose turn it is
+        """
+        while node != None:
+            node.visits += 1
+            node.reward -= turn*reward
+            #node.reward += reward
+            node = node.parent
+            turn *= -1
+        return
 
     def best_child(self, node, exploration_parameter):
         """
