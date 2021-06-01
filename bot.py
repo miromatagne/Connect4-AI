@@ -28,6 +28,15 @@ COLUMN_COUNT = 7
 class Bot(Observer):
 
     def __init__(self, game, bot_type=None, model=None, depth=None, iteration=None):
+        """
+            Constructor of the Bot class.
+
+            :param game: corresponding Connect4Game instance
+            :param bot_type: specifies the bot (MCTS, MiniMax, Random, ...)
+            :param model: in case a trained model plays, we specify the model
+            :param depth: depth used in the Minimax algorithm if the Minimax bot is used
+            :param iteration: number of iterations used in the MCTS algorithm in case the MCTS bot is used
+        """
         self._game = game
         # Bot type determines how the bot picks his moves
         self._type = bot_type
@@ -50,7 +59,7 @@ class Bot(Observer):
 
             :return: the column number where the bot should play the next move
         """
-        #print(PLAYERS[self._game._turn] + " is about to play :")
+        # print(PLAYERS[self._game._turn] + " is about to play :")
         column = None
         # In case the bot type is RANDOM, the bot checks for winning moves, and if there aren't,
         # then picks a valid random move.
@@ -66,16 +75,16 @@ class Bot(Observer):
         elif self._type == RANDOM_IMPR:
             win_col = self.get_winning_move()
             if win_col is not None:
-                #print("Winning column :", win_col)
+                # print("Winning column :", win_col)
                 column = win_col
             else:
                 def_move = self.get_defensive_move()
                 if def_move is not None:
-                    #print("Defensive column :", def_move)
+                    # print("Defensive column :", def_move)
                     column = def_move
                 else:
                     column = self.get_random_move()
-                    #print("Random move", column)
+                    # print("Random move", column)
         elif self._type == MINIMAX:
             column, minimax_score = self.minimax(
                 self._game._board, self._depth, -math.inf, math.inf, True)
@@ -131,6 +140,13 @@ class Bot(Observer):
         return column
 
     def get_valid_locations(self, board):
+        """
+            Returns all the valid columns where the player can play, aka the columns
+            that are not full
+
+            :param board: actual state of the game, board of the game
+            :return: list of all valid column indices
+        """
         free_cols = []
         for i in range(COLUMN_COUNT):
             if board[i][ROW_COUNT-1] == 0:

@@ -23,6 +23,19 @@ RANDOM_IMPR = "RANDOM_IMPR"
 class Connect4Game(Observable):
 
     def __init__(self, player1, player2, bot1_model=None, bot2_model=None, rows=6, cols=7, iteration=None, depth1=None, depth2=None):
+        """
+            Constructor of the Connect4Game class.
+
+            :param player1: first player, can be a bot of any type
+            :param player2: second player, can be a bot of any type
+            :param bot1_model: model used, if necessary, with the bot of player1
+            :param bot2_model: model used, if necessary, with the bot of player2
+            :param rows: number of rows in the game
+            :param cols: number of columns in the game
+            :param iteration: number of iterations used by the players using MCTS
+            :param depth1: depth used in the MiniMax algorithm of player1, it is uses MiniMax
+            :param depth2: depth used in the MiniMax algorithm of player2, it is uses MiniMax
+        """
         super().__init__()
         self._rows = rows
         self._cols = cols
@@ -70,9 +83,10 @@ class Connect4Game(Observable):
 
     def place(self, c):
         """
-        Tries to place the playing colour on the cth column
-        :param c: column to place on
-        :return: position of placed colour or None if not placeable
+            Tries to place the playing colour on the c-th column
+
+            :param c: column to place on
+            :return: position of placed colour or None if not placeable
         """
         # print(self._board)
         for r in range(self._rows):
@@ -89,7 +103,8 @@ class Connect4Game(Observable):
                     b = 0
                     if self._turn == self._starter:  # Winner is the player that started
                         b = 1
-                    self.file_recording.write_to_winning_moves(b, self._turn, self.moves[self._turn])
+                    self.file_recording.write_to_winning_moves(
+                        b, self._turn, self.moves[self._turn])
                     self._won = self._turn
                     self.notify(Event.GAME_WON, self._won)
 
@@ -104,9 +119,10 @@ class Connect4Game(Observable):
 
     def check_win(self, pos):
         """
-        Checks for win/draw from newly added disc
-        :param pos: position from which to check the win
-        :return: player number if a win occurs, 0 if a draw occurs, None otherwise
+            Checks for win/draw from newly added disc
+
+            :param pos: position from which to check the win
+            :return: player number if a win occurs, 0 if a draw occurs, None otherwise
         """
         c = pos[0]
         r = pos[1]
@@ -186,46 +202,46 @@ class Connect4Game(Observable):
 
     def get_cols(self):
         """
-        :return: The number of columns of the game
+            :return: The number of columns of the game
         """
         return self._cols
 
     def get_rows(self):
         """
-        :return: The number of rows of the game
+            :return: The number of rows of the game
         """
         return self._rows
 
     def get_win(self):
         """
-        :return: If one play won or not
+            :return: If one play won or not
         """
         return self._won
 
     def get_turn(self):
         """
-        :return: To which player is the turn
+            :return: To which player is the turn
         """
         return self._turn
 
     def get_board(self):
         """
-        :return: A copy of the game board
+            :return: A copy of the game board
         """
         return self._board.copy()
 
     def board_at(self, c, r):
         """
-        :param: c, the column
-        :param: r, the row
-        :return: What value is held at column c, row r in the board
+            :param: c, the column
+            :param: r, the row
+            :return: What value is held at column c, row r in the board
         """
         return self._board[c][r]
 
     def copy_state(self):
         """
-        Use this instead of the copy() method. Useful as we don't want our graphical interface (viewed as an Observer in this class)
-        to be updated when we are playing moves in our tree search.
+            Use this instead of the copy() method. Useful as we don't want our graphical interface (viewed as an Observer in this class)
+            to be updated when we are playing moves in our tree search.
         """
 
         # Temporary removes the
@@ -241,12 +257,19 @@ class Connect4Game(Observable):
         return new_one
 
     def bot_place(self):
+        """
+            Calls the bots whenever they need to play their moves
+        """
         if self._turn == 1:
             self._player1.make_move()
         else:
             self._player2.make_move()
 
     def get_valid_locations(self):
+        """
+            Returns the indices of the columns that are not full, aka the column where
+            the user can play his next move
+        """
         free_cols = []
         for i in range(COLUMN_COUNT):
             if self._board[i][ROW_COUNT-1] == 0:

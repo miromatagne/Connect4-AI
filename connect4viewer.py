@@ -28,7 +28,7 @@ class Connect4Viewer(Observer):
 
     def initialize(self):
         """
-        Initialises the view window
+            Initialises the view window
         """
         pygame.init()
         icon = pygame.image.load("icon.png")
@@ -41,10 +41,10 @@ class Connect4Viewer(Observer):
 
     def draw_board(self):
         """
-        Draws board[c][r] with c = 0 and r = 0 being bottom left
-        0 = empty (background colour)
-        1 = yellow
-        2 = red
+            Draws board[c][r] with c = 0 and r = 0 being bottom left
+            0 = empty (background colour)
+            1 = yellow
+            2 = red
         """
         self._screen.fill(BLUE_COLOR)
 
@@ -71,7 +71,7 @@ class Connect4Viewer(Observer):
 
     def update(self, obj, event, *argv):
         """
-        Called when notified. Updates the view.
+            Called when notified. Updates the view.
         """
         if event == Event.GAME_WON:
             won = argv[0]
@@ -83,7 +83,7 @@ class Connect4Viewer(Observer):
 
     def draw_win_message(self, won):
         """
-        Displays win message on top of the board
+            Displays win message on top of the board
         """
         if won == 1:
             img = self._font.render(
