@@ -1,6 +1,7 @@
 import numpy as np
 import uuid
 import os
+import math
 from training import Training
 
 class FileRecording():
@@ -22,12 +23,12 @@ class FileRecording():
         np.save(self.winning_moves_filename, arr)
 
     def read_history_file(self,file_name):
-        folder = './Game_History/'
+        folder = './Game_History_MM_vs_MC/'
         current_game = np.load(folder + file_name)
         return current_game
 
     def read_winning_file(self, file_name):
-        folder = './Winning_Moves/'
+        folder = './Winning_Moves_MM_vs_MC/'
         current_game = np.load(folder + file_name,allow_pickle=True)
         started = current_game[0]
         turn = current_game[1]
@@ -40,19 +41,19 @@ class FileRecording():
         winner_boards = np.zeros((21, 7, 6))
         last_round = 0
 
-        if started == 0:
+        if started == 0: #The winner did not start the game
             winner_boards[:len(current_game),:,:] = current_game[::2,:,:]
-        else:
+        else: #The winner started the game
             winner_boards[:len(current_game),:,:] = current_game[1::2,:,:]
-        if turn == -1:
+        if turn == -1: #Ensure that winner pieces are set to 1
             winner_boards *= -1
-
-        for round in range(1, winner_boards.shape[0]):  # Skip first round
+        #Detect the last board of the current game 
+        for round in range(1, winner_boards.shape[0]):  #Skip first round
             current_board = np.all(winner_boards[round] == 0)
             # print(-winner_boards[round])
             # print(current_board)
             if current_board:
-                last_round = round # round where the last coin is placed
+                last_round = round #Round where the last coin is placed
                 break
 
         encoding = []
@@ -77,23 +78,31 @@ class FileRecording():
         
 
     def generate_training_set(self):
-        games_history_folder = './Game_History/'
+        games_history_folder = './Game_History_MM_vs_MC/'
         history_games = os.listdir(games_history_folder)
         input_samples = np.zeros((len(history_games)*21, 7, 6))
         output_samples = np.zeros((len(history_games)*21, 7))
         total_rounds = 0
-
+        
         for g in range(len(history_games)):
             winner_boards, encoded_moves, last_round = self.read_file(history_games[g]) 
-            
+
             if last_round != 0:
+                nb_of_boards = len(winner_boards)
+                for i in range(math.floor(len(input_samples)/nb_of_boards)):
+                    comparison = input_samples[i*nb_of_boards:(i+1)*nb_of_boards] == winner_boards
+                    duplicate = comparison.all()
+                    if duplicate:
+                        break
+
+            if last_round != 0 and not duplicate:
                 input_samples[total_rounds:total_rounds + last_round] = winner_boards
                 output_samples[total_rounds:total_rounds + last_round] = encoded_moves  
-
-            total_rounds += last_round
+            if not duplicate:
+                total_rounds += last_round
+                
         input_samples = input_samples[:total_rounds]
         output_samples = output_samples[:total_rounds]
-
         # print(input_samples[-5:], output_samples[-5:], input_samples.shape, output_samples.shape)
 
     

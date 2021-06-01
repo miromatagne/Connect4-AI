@@ -1,0 +1,28 @@
+
+200 games
+iteration of MonteCarlo=1000
+depth=3
+Minimax Accuracy , Average time per game , Average time , for single move
+        20.00 ,        11.021 ,        0.028
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        80.00 ,        11.021 ,        0.971
+depth=4
+Minimax Accuracy , Average time per game , Average time , for single move
+        49.50 ,        16.892 ,        0.091
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        50.50 ,        16.892 ,        0.957
+depth=5
+Minimax Accuracy , Average time per game , Average time , for single move
+        53.50 ,        19.324 ,        0.345
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        46.50 ,        19.324 ,        0.907
+depth=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        63.00 ,        32.237 ,        1.144
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        37.00 ,        32.237 ,        0.916
+depth=7
+Minimax Accuracy , Average time per game , Average time , for single move
+        67.50 ,        81.002 ,        4.329
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        32.50 ,        81.002 ,        0.806

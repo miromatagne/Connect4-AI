@@ -1,0 +1,83 @@
+10 games
+iteration of MonteCarlo=1000 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        60.00 ,        18.247 ,        0.620
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        40.00 ,        18.247 ,        0.550
+
+10 games
+iteration of MonteCarlo=2000 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        20.00 ,        28.498 ,        0.588
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        80.00 ,        28.498 ,        1.058
+
+10 games
+iteration of MonteCarlo=1500 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        60.00 ,        24.351 ,        0.624
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        40.00 ,        24.351 ,        0.805
+
+10 games
+iteration of MonteCarlo=1200 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        60.00 ,        19.743 ,        0.610
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        40.00 ,        19.743 ,        0.661
+
+10 games
+iteration of MonteCarlo=1100 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        40.00 ,        19.311 ,        0.557
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        60.00 ,        19.311 ,        0.613
+
+30 games
+iteration of MonteCarlo=1100 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        50.00 ,        19.955 ,        0.641
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        50.00 ,        19.955 ,        0.599
+
+200 games
+iteration of MonteCarlo=1100 and depth of minimax=6
+Minimax Accuracy , Average time per game , Average time , for single move
+        59.50 ,        13.440 ,        0.457
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        40.50 ,        13.440 ,        0.399
+
+1 games
+iteration of MonteCarlo=1100 and depth of minimax=8
+Minimax Accuracy , Average time per game , Average time , for single move
+        100.00 ,        206.882 ,        11.093
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        0.00 ,        206.882 ,        0.400
+
+1 games
+iteration of MonteCarlo=1100 and depth of minimax=7
+Minimax Accuracy , Average time per game , Average time , for single move
+        0.00 ,        26.587 ,        1.289
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        100.00 ,        26.587 ,        0.372
+
+1 games
+iteration of MonteCarlo=1100 and depth of minimax=3
+Minimax Accuracy , Average time per game , Average time , for single move
+        0.00 ,        8.365 ,        0.010
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        100.00 ,        8.365 ,        0.387
+
+10 games
+iteration of MonteCarlo=1100 and depth of minimax=3
+Minimax Accuracy , Average time per game , Average time , for single move
+        10.00 ,        4.631 ,        0.011
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        90.00 ,        4.631 ,        0.402
+
+1 games
+iteration of MonteCarlo=3000 and depth of minimax=7
+Minimax Accuracy , Average time per game , Average time , for single move
+        100.00 ,        38.223 ,        1.351
+MonteCarlo Accuracy , Average time per game , Average time , for single move  (param of MonteCarlo: explo=2.0)
+        0.00 ,        38.223 ,        1.107

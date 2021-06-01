@@ -27,8 +27,8 @@ MINIMAX = "MINIMAX"
 
 
 class MiniMax(Bot):
-    def __init__(self, game):
-        super().__init__(game, bot_type=MINIMAX)
+    def __init__(self, game, depth):
+        super().__init__(game, bot_type=MINIMAX, depth=depth)
 
     def drop_piece(self, board, row, col, piece):
         """

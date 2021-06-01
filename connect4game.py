@@ -22,7 +22,7 @@ RANDOM_IMPR = "RANDOM_IMPR"
 
 class Connect4Game(Observable):
 
-    def __init__(self, player1, player2, bot1_model=None, bot2_model=None, rows=6, cols=7):
+    def __init__(self, player1, player2, bot1_model=None, bot2_model=None, rows=6, cols=7, iteration=None, depth1=None, depth2=None):
         super().__init__()
         self._rows = rows
         self._cols = cols
@@ -35,15 +35,23 @@ class Connect4Game(Observable):
         self.file_recording = FileRecording()
         self.reset_game()
         if player1 == MONTE_CARLO:
-            self._player1 = MonteCarlo(self)
+            self._player1 = MonteCarlo(self, iteration=iteration)
         elif player1 == MINIMAX:
-            self._player1 = MiniMax(self)
+            self._player1 = MiniMax(self, depth=depth1)
         else:
-            self._player1 = Bot(self, bot_type=player1)
+            if bot1_model is not None:
+                self._player1 = Bot(self, model=bot1_model)
+            else:
+                self._player1 = Bot(self, bot_type=player1)
         if player2 == MONTE_CARLO:
-            self._player2 = MonteCarlo(self)
+            self._player2 = MonteCarlo(self, iteration=iteration)
         elif player2 == MINIMAX:
-            self._player2 = MiniMax(self)
+            self._player2 = MiniMax(self, depth=depth2)
+        else:
+            if bot2_model is not None:
+                self._player2 = Bot(self, model=bot2_model)
+            else:
+                self._player2 = Bot(self, bot_type=player2)
         self.last_move = None
 
     def reset_game(self):
@@ -81,8 +89,7 @@ class Connect4Game(Observable):
                     b = 0
                     if self._turn == self._starter:  # Winner is the player that started
                         b = 1
-                    self.file_recording.write_to_winning_moves(
-                        b, self._turn, self.moves[self._turn])
+                    self.file_recording.write_to_winning_moves(b, self._turn, self.moves[self._turn])
                     self._won = self._turn
                     self.notify(Event.GAME_WON, self._won)
 
