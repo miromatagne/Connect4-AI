@@ -45,7 +45,7 @@ class Bot(Observer):
             self._pruning = pruning 
         elif self._type == MONTE_CARLO:
             self._iteration = iteration
-
+            
         self._model = None
         if model is not None:
             self._model = model

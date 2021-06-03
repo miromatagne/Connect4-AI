@@ -21,20 +21,33 @@ MINIMAX = "MINIMAX"
 RANDOM = "RANDOM"
 RANDOM_IMPR = "RANDOM_IMPR"
 
+"""
+    One can run games of connect 4 between different types of bot and algorithms by giving as argument to the constructor
+    Connect4Game the variables above.
+"""
 
 if __name__ == '__main__':
+    nb_Games = 1
     total_games_won = 0
     total_games_won2 = 0
-    start = time.perf_counter()
-    for i in range(1):
-        game = Connect4Game(MINIMAX, MONTE_CARLO, iteration=100, depth1=3)
+    #Change to True if one wants to play
+    want_to_play = False
+
+    for i in range(nb_Games):
+        game = Connect4Game(MINIMAX, MONTE_CARLO, iteration=300, depth1=4)
         view = Connect4Viewer(game=game)
         view.initialize()
 
         running = True
         while running:
             if ((game._turn == 1) and (game.get_win() is None)):
-                game.bot_place()
+                if not want_to_play:
+                    game.bot_place()
+                else:
+                    for event in pygame.event.get():
+                        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                            game.place(pygame.mouse.get_pos()[0] // SQUARE_SIZE)
+
             elif ((game._turn == -1) and (game.get_win() is None)):
                 game.bot_place()
             elif game.get_win() is not None:
@@ -46,29 +59,23 @@ if __name__ == '__main__':
                     running = False
                 else:
                     running = False
+    pygame.quit()
 
-            # for event in pygame.event.get():
-            #     if event.type == pygame.QUIT:
-            #         running = False
-            #     if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            #         if game.get_win() is None:
-            #             game.place(pygame.mouse.get_pos()
-            #                        [0] // SQUARE_SIZE)
-            #         else:
-            #             game.reset_game()
-    # pygame.quit()
+    if not want_to_play:
+        print("Win rate of Minimax: ", 100*(total_games_won/nb_Games), "%")  # Minimax
+    else: 
+        print("You won with a win rate of: ", 100*(total_games_won/nb_Games), "%")
+    print("Win rate of Monte Carlo: ", 100*(total_games_won2/nb_Games), "%")  # MonteCarlo
 
-    # print(total_games_won/10)  # Minimax
-    # print(total_games_won2/10)  # MonteCarlo
+    
 
-    # Evaluation of the model
+    #Uncomment the following lines to create and train a deep neural network model
+    # f = FileRecording()
+    # f.generate_training_set('./Game_History_MM_vs_MC/')
+
+    #Uncomment the following lines to evaluate the model
     # nbOfGames = 100
     # evaluation = Evaluation("./model_Minmax_vs_MonteCarlo_3layers_no_duplicate")
     # percentage = evaluation.evaluate_model(nbOfGames, RANDOM_IMPR)
     # print(percentage)
-
-
-    # f = FileRecording()
-    # f.generate_training_set('./Game_History_MM_vs_MC/')
-
     

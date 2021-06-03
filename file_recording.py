@@ -48,7 +48,7 @@ class FileRecording():
             :param file_name: file to be loaded
             :return: game stored in the given file
         """
-        folder = './Game_History_MM_vs_MC/'
+        folder = './Game_History/'
         current_game = np.load(folder + file_name)
         return current_game
 
@@ -59,7 +59,7 @@ class FileRecording():
             :param file_name: file containing winning moves to be loaded
             :return: winner, 1 if he started, otherwise 0 and his winning moves
         """
-        folder = './Winning_Moves_MM_vs_MC/'
+        folder = './Winning_Moves/'
         current_game = np.load(folder + file_name,allow_pickle=True)
         started = current_game[0]
         turn = current_game[1]

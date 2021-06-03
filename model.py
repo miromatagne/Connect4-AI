@@ -17,13 +17,8 @@ class Model():
         """
             Create a neural network model.
         """
-        # print(tf.__path__)  
-        # print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-        # tf.debugging.set_log_device_placement(True)
-        # with tf.device('/GPU:0'):
         inputs = tf.keras.Input(shape = (42,))
         x = tf.keras.layers.Dense(256, activation=tf.nn.relu)(inputs)
-        # hidden = tf.keras.layers.Dense(256, activation=tf.nn.relu)(x)
         self._outputs = tf.keras.layers.Dense(7, activation=tf.nn.relu)(x)
         self._model = tf.keras.Model(inputs=inputs, outputs=self._outputs)
 
@@ -83,6 +78,4 @@ class Model():
         """
             Save the model.
         """
-        # self._model.save('./model_better_bot_type2_4layers')
         self._model.save('./model_Minmax_vs_MonteCarlo_3layers_no_duplicate')
-        # self._model.save('./saved_model/my_model')
