@@ -45,7 +45,7 @@ class MiniMax(Bot):
             Return the first row which does not have a piece in the specified column (col)
             :param board: board with all the pieces that have been placed
             :param col: one of the column of the board
-            : return: row number
+            :return: row number
         """
         for r in range(ROW_COUNT):
             if board[col][r] == 0:
@@ -165,7 +165,7 @@ class MiniMax(Bot):
             :alpha: used for the pruning, correspond to the lowest value of the range values of the node
             :beta: used for the pruning, correspond to the hihest value of the range values of the node
             :maximizingPlayer: boolean to specify if the algorithm should maximize or minimize the reward
-
+            :pruning: boolean to specify if the algorithm uses the pruning
             :return: column where to place the piece
         """
         valid_locations = self.get_valid_locations(board)

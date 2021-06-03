@@ -1,3 +1,0 @@
-6 games
-Minimax Acc , Av time per game , Av max time for single move , Ennemy Acc , Av time per game , Av max time for single move (Minimax depth=7)
-        33.33 ,        875.732 ,        163.364 ,        66.67 ,        875.732 ,        34.159

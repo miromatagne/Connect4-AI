@@ -36,6 +36,7 @@ class Bot(Observer):
             :param model: in case a trained model plays, we specify the model
             :param depth: depth used in the Minimax algorithm if the Minimax bot is used
             :param iteration: number of iterations used in the MCTS algorithm in case the MCTS bot is used
+            :param pruning: boolean used for the pruning in the Minimax algorithm if the Minimax bot is used
         """
         self._game = game
         # Bot type determines how the bot picks his moves
