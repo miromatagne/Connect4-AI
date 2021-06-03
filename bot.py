@@ -27,7 +27,7 @@ COLUMN_COUNT = 7
 
 class Bot(Observer):
 
-    def __init__(self, game, bot_type=None, model=None, depth=None, iteration=None):
+    def __init__(self, game, bot_type=None, model=None, depth=None, iteration=None, pruning=True):
         """
             Constructor of the Bot class.
 
@@ -42,6 +42,7 @@ class Bot(Observer):
         self._type = bot_type
         if self._type == MINIMAX:
             self._depth = depth
+            self._pruning = pruning 
         elif self._type == MONTE_CARLO:
             self._iteration = iteration
 
@@ -87,7 +88,7 @@ class Bot(Observer):
                     # print("Random move", column)
         elif self._type == MINIMAX:
             column, minimax_score = self.minimax(
-                self._game._board, self._depth, -math.inf, math.inf, True)
+                self._game._board, self._depth, -math.inf, math.inf, True, self._pruning)
             # print(column)
         elif self._type == MONTE_CARLO:
             o = Node(self._game.copy_state())

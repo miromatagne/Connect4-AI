@@ -27,8 +27,8 @@ MINIMAX = "MINIMAX"
 
 
 class MiniMax(Bot):
-    def __init__(self, game, depth):
-        super().__init__(game, bot_type=MINIMAX, depth=depth)
+    def __init__(self, game, depth, pruning=True):
+        super().__init__(game, bot_type=MINIMAX, depth=depth, pruning=pruning)
 
     def drop_piece(self, board, row, col, piece):
         """
@@ -156,7 +156,7 @@ class MiniMax(Bot):
 
         return score
 
-    def minimax(self, board, depth, alpha, beta, maximizingPlayer):
+    def minimax(self, board, depth, alpha, beta, maximizingPlayer, pruning):
         """
             Main function of minimax, called whenever a move is needed.
             Recursive function, depth of the recursion being determined by the parameter depth.
@@ -192,13 +192,14 @@ class MiniMax(Bot):
                     b_copy.append(board[i].copy())
                 self.drop_piece(b_copy, row, col, self._game._turn)
                 new_score = self.minimax(
-                    b_copy, depth-1, alpha, beta, False)[1]
+                    b_copy, depth-1, alpha, beta, False, pruning)[1]
                 if new_score > value:
                     value = new_score
                     column = col
-                alpha = max(alpha, value)
-                if alpha >= beta:
-                    break
+                if pruning:
+                    alpha = max(alpha, value)
+                    if alpha >= beta:
+                        break
             return column, value
 
         else:  # Minimizing player
@@ -210,11 +211,12 @@ class MiniMax(Bot):
                 for i in range(0, len(board)):
                     b_copy.append(board[i].copy())
                 self.drop_piece(b_copy, row, col, self._game._turn*-1)
-                new_score = self.minimax(b_copy, depth-1, alpha, beta, True)[1]
+                new_score = self.minimax(b_copy, depth-1, alpha, beta, True, pruning)[1]
                 if new_score < value:
                     value = new_score
                     column = col
-                beta = min(beta, value)
-                if alpha >= beta:
-                    break
+                if pruning:
+                    beta = min(beta, value)
+                    if alpha >= beta:
+                        break
             return column, value
