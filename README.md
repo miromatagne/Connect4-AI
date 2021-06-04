@@ -2,11 +2,11 @@
 
 Simple Python 3 Connect Four game using the `pygame` library
 
-## Playing
+## AI
 
-First player is chosen randomly, clicking on one column will place a disc if possible. If win/draw occurs, a message is displayed, clicking again restarts the game
-
-These actions can also be performed programmatically using the corresponding functions
+- MiniMax search algorithm with varying depth and custom utility function
+- Monte Carlo Search Trees with custom number of iterations
+- Deep Neural Network whose goal is to learn how the Minimax plays (Bonus)
 
 ## Screenshot
 
