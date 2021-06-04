@@ -78,7 +78,7 @@ if __name__ == '__main__':
           (total_games_won2/nb_Games), "%")
 
     # Uncomment the following lines to create and train a deep neural network model
-    # Note that in order to train the model, some games (preferable to have a large amount of games) have to be played first 
+    # Note that in order to train the model, some games (preferable to have a large amount of games) have to be played first
     # in order to have a dataset used for the training and the evaluation.
 
     # f = FileRecording()
@@ -89,7 +89,6 @@ if __name__ == '__main__':
     # evaluation = Evaluation("./model_Minmax_vs_MonteCarlo_3layers_no_duplicate")
     # percentage = evaluation.evaluate_model(nbOfGames, RANDOM_IMPR)
     # print(percentage)
-
 
     # Measurements: uncomment the following lines in order to run the tests performed discussed in the report.
     # Note that the following measures take a lot of time to run.
@@ -102,7 +101,7 @@ if __name__ == '__main__':
     # # Comparison for non pruning Minimax
     # arguments = []
     # for depth in depths:
-    #     arguments.append(("Minimax_no_pruning_depth_"+str(depth)+".txt", 200, depth)) 
+    #     arguments.append(("Minimax_no_pruning_depth_"+str(depth)+".txt", 200, depth))
 
     # # multiprocessing
     # pool = multiprocessing.Pool()
@@ -115,13 +114,13 @@ if __name__ == '__main__':
     # arguments2 = []
     # for depth in depths:
     #     arguments2.append(("Minimax_depth_"+str(depth)+".txt", depth))
-    
+
     # # multiprocessing
     # pool = multiprocessing.Pool()
     # start = time.perf_counter()
     # pool.starmap(comparison_of_MM, arguments2)
     # pool.close()
-    
+
     # Measurement of the  Monte Carlo by varying the iteration parameter
 
     # arguments3 = []
@@ -149,6 +148,3 @@ if __name__ == '__main__':
     # pool.starmap(comparison, arguments4)
     # pool.close()
     # print(time.perf_counter() - start)
-
-
-    
