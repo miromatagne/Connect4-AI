@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # in order to have a dataset used for the training and the evaluation.
 
     # f = FileRecording()
-    # f.generate_training_set('./Game_History_MM_vs_MC/')
+    # f.generate_training_set('./Game_History/')
 
     # Uncomment the following lines to evaluate the model
     # nbOfGames = 100
