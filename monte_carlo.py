@@ -73,7 +73,7 @@ class MonteCarlo(Bot):
         for col in free_cols:
             if col not in node.children_moves:
                 new_state = node.state.copy_state()
-                new_state.place(col)
+                new_state.place(col, save=False)
                 break
 
         node.add_child(new_state, col)
@@ -94,7 +94,7 @@ class MonteCarlo(Bot):
         while not state.last_move or not state.check_win(state.last_move):
             free_cols = state.get_valid_locations()
             col = random.choice(free_cols)
-            state.place(col)
+            state.place(col, save=False)
             turn *= -1
 
         reward_bool = state.check_win(state.last_move)

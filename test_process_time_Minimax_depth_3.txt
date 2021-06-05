@@ -1,0 +1,7 @@
+
+10 games
+iteration of Minimax=3
+Minimax Accuracy , Average time per game , Average max time for single move
+        0.00 ,        27.356 ,        0.023
+Ennemy Accuracy , Average time per game , Average max time for single move (Minimax depth=7)
+        100.00 ,        27.356 ,        5.963

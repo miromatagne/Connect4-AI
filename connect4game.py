@@ -81,7 +81,7 @@ class Connect4Game(Observable):
         self._won = None
         self.notify(Event.GAME_RESET)
 
-    def place(self, c):
+    def place(self, c, save=True):
         """
             Tries to place the playing colour on the c-th column
 
@@ -94,8 +94,8 @@ class Connect4Game(Observable):
                 self._board[c][r] = self._turn
                 self.last_move = [c, r]
                 self.notify(Event.PIECE_PLACED, (c, r))
-
-                self.file_recording.write_to_history(self._round, self._board)
+                if save == True:
+                    self.file_recording.write_to_history(self._round, self._board)
                 self.moves[self._turn].append(c)
 
                 exists_winner = self.check_win((c, r))
@@ -103,8 +103,9 @@ class Connect4Game(Observable):
                     b = 0
                     if self._turn == self._starter:  # Winner is the player that started
                         b = 1
-                    self.file_recording.write_to_winning_moves(
-                        b, self._turn, self.moves[self._turn])
+                    if save == True:
+                        self.file_recording.write_to_winning_moves(
+                            b, self._turn, self.moves[self._turn])
                     self._won = self._turn
                     self.notify(Event.GAME_WON, self._won)
 

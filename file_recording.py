@@ -15,8 +15,8 @@ class FileRecording():
         if unique_name == None:
             unique_name = str(uuid.uuid4())
         
-        self.winning_moves_filename = './Winning_Moves/' + unique_name + '.npy'
-        self.history_filename = './Game_History/' + unique_name + '.npy'
+        self.winning_moves_filename = './Winning_Moves_MM_vs_MC/' + unique_name + '.npy'
+        self.history_filename = './Game_History_MM_vs_MC/' + unique_name + '.npy'
         self.file_content = np.zeros((42, 7, 6))
     
     def write_to_history(self, round_nb, board):
@@ -48,7 +48,7 @@ class FileRecording():
             :param file_name: file to be loaded
             :return: game stored in the given file
         """
-        folder = './Game_History/'
+        folder = './Game_History_MM_vs_MC/'
         current_game = np.load(folder + file_name)
         return current_game
 
@@ -59,7 +59,7 @@ class FileRecording():
             :param file_name: file containing winning moves to be loaded
             :return: winner, 1 if he started, otherwise 0 and his winning moves
         """
-        folder = './Winning_Moves/'
+        folder = './Winning_Moves_MM_vs_MC/'
         current_game = np.load(folder + file_name,allow_pickle=True)
         started = current_game[0]
         turn = current_game[1]
